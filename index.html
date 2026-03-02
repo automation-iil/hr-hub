@@ -423,7 +423,21 @@ textarea { resize: vertical; min-height: 80px; }
         </div>
         <div class="form-group full"><label>Address</label><input id="f_address" placeholder="City, State"/></div>
         <div class="form-group"><label>Interview Date</label><input id="f_interview_date" type="date"/></div>
-        <div class="form-group"><label>Interview Time</label><input id="f_interview_time" type="time"/></div>
+        <div class="form-group"><label>Interview Time</label>
+          <div style="display:flex;gap:8px;">
+            <select id="f_ih" style="flex:1;"><option value="">Hour</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7</option><option>8</option>
+              <option>9</option><option>10</option><option>11</option><option>12</option>
+            </select>
+            <select id="f_im" style="flex:1;"><option value="">Min</option>
+              <option>00</option><option>15</option><option>30</option><option>45</option>
+            </select>
+            <select id="f_ia" style="flex:1;"><option value="">AM/PM</option>
+              <option>AM</option><option>PM</option>
+            </select>
+          </div>
+        </div>
         <div class="form-group full"><label>Interview Type</label>
           <select id="f_interview_type">
             <option value="">— Select —</option>
@@ -507,16 +521,27 @@ function saveGasUrl() {
 }
 
 // ── API Call ───────────────────────────────────────────────────
-async function api(action, data = {}) {
+async function api(action, data = {}, retries = 3) {
   if (!GAS_URL) { toast('Please set your Google Apps Script URL first', 'error'); throw new Error('No GAS URL'); }
   const body = JSON.stringify({ action, ...data });
-  const res = await fetch(GAS_URL, {
-    method: 'POST', body,
-    headers: { 'Content-Type': 'text/plain' }
-  });
-  const json = await res.json();
-  if (!json.ok) throw new Error(json.error || 'Unknown error');
-  return json;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 25000); // 25s timeout
+      const res = await fetch(GAS_URL, {
+        method: 'POST', body,
+        headers: { 'Content-Type': 'text/plain' },
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      const json = await res.json();
+      if (!json.ok) throw new Error(json.error || 'Unknown error');
+      return json;
+    } catch (e) {
+      if (attempt === retries) throw new Error(e.name === 'AbortError' ? 'Request timed out. Please try again.' : e.message);
+      await new Promise(r => setTimeout(r, 1000 * attempt)); // wait 1s, 2s before retry
+    }
+  }
 }
 
 // ── Load Data ─────────────────────────────────────────────────
@@ -646,7 +671,16 @@ function openEditModal(id) {
   document.getElementById('f_address').value = c.Address || '';
   document.getElementById('f_status').value = c.Status || 'Pending';
   document.getElementById('f_interview_date').value = c['Interview Date'] || '';
-  document.getElementById('f_interview_time').value = c['Interview Time'] || '';
+  // Parse stored time like "10:30 AM" into dropdowns
+  const tStr = c['Interview Time'] || '';
+  const tMatch = tStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (tMatch) {
+    document.getElementById('f_ih').value = String(parseInt(tMatch[1]));
+    document.getElementById('f_im').value = tMatch[2];
+    document.getElementById('f_ia').value = tMatch[3].toUpperCase();
+  } else {
+    ['f_ih','f_im','f_ia'].forEach(id => document.getElementById(id).value = '');
+  }
   document.getElementById('f_interview_type').value = c['Interview Type'] || '';
   document.getElementById('f_notes').value = c.Notes || '';
   if (c['Has Resume']) document.getElementById('resumeFileName').textContent = 'Already uploaded ✓';
@@ -654,9 +688,10 @@ function openEditModal(id) {
   openModal('candidateModal');
 }
 function clearForm() {
-  ['f_id','f_name','f_email','f_phone','f_address','f_interview_date','f_interview_time','f_notes'].forEach(id => document.getElementById(id).value = '');
+  ['f_id','f_name','f_email','f_phone','f_address','f_interview_date','f_notes'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('f_status').value = 'Pending';
   document.getElementById('f_interview_type').value = '';
+  ['f_ih','f_im','f_ia'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('resumeFileName').textContent = 'No file selected';
   document.getElementById('offerFileName').textContent = 'No file selected';
   resumeBase64 = ''; resumeName = ''; offerBase64 = ''; offerName = '';
@@ -700,7 +735,12 @@ async function saveCandidate() {
     Address: document.getElementById('f_address').value,
     Status: document.getElementById('f_status').value,
     'Interview Date': document.getElementById('f_interview_date').value,
-    'Interview Time': document.getElementById('f_interview_time').value,
+    'Interview Time': (() => {
+      const h = document.getElementById('f_ih').value;
+      const m = document.getElementById('f_im').value;
+      const a = document.getElementById('f_ia').value;
+      return h && m && a ? h + ':' + m + ' ' + a : '';
+    })(),
     'Interview Type': document.getElementById('f_interview_type').value,
     Notes: document.getElementById('f_notes').value,
   };
