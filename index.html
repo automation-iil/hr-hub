@@ -6,161 +6,132 @@
 <title>HR Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#0f0f13;--surf:#18181f;--card:#1e1e28;--bdr:#2a2a38;--acc:#7c6af7;--gold:#f7c06a;--grn:#4ade80;--red:#f87171;--blu:#60a5fa;--txt:#e8e8f0;--mut:#6b6b80}
+:root{--bg:#0f0f13;--sur:#18181f;--crd:#1e1e28;--bdr:#2a2a38;--acc:#7c6af7;--gld:#f7c06a;--grn:#4ade80;--red:#f87171;--blu:#60a5fa;--txt:#e8e8f0;--mut:#6b6b80}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100vh;font-size:15px}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100vh}
 .app{display:flex;min-height:100vh}
-
-/* sidebar */
-.sidebar{width:220px;background:var(--surf);border-right:1px solid var(--bdr);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
-.logo{padding:22px 20px 18px;border-bottom:1px solid var(--bdr)}
-.logo h1{font-family:'DM Serif Display',serif;font-size:20px}.logo span{color:var(--acc)}
-.logo p{font-size:10px;color:var(--mut);margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
-.ns{padding:14px 20px 4px;font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
-.ni{display:flex;align-items:center;gap:9px;padding:10px 20px;color:var(--mut);cursor:pointer;font-size:13px;font-weight:500;border-left:3px solid transparent;transition:all .15s}
+.side{width:215px;background:var(--sur);border-right:1px solid var(--bdr);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+.logo{padding:20px 18px 16px;border-bottom:1px solid var(--bdr)}
+.logo h1{font-family:'DM Serif Display',serif;font-size:19px}.logo span{color:var(--acc)}
+.logo p{font-size:10px;color:var(--mut);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.ns{padding:12px 18px 3px;font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.07em}
+.ni{display:flex;align-items:center;gap:8px;padding:9px 18px;color:var(--mut);cursor:pointer;font-size:13px;font-weight:500;border-left:3px solid transparent;transition:all .12s}
 .ni:hover{color:var(--txt);background:rgba(124,106,247,.06)}
 .ni.on{color:var(--acc);background:rgba(124,106,247,.1);border-left-color:var(--acc)}
-.ni svg{width:16px;height:16px;flex-shrink:0}
-
-/* main */
-.main{flex:1;padding:30px 34px;overflow-y:auto}
+.ni svg{width:15px;height:15px;flex-shrink:0}
+.main{flex:1;padding:28px 32px;overflow-y:auto}
 .page{display:none}.page.on{display:block}
-.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.pt{font-family:'DM Serif Display',serif;font-size:28px}.pt em{color:var(--acc);font-style:italic}
-
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.sc{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:18px}
-.sn{font-family:'DM Serif Display',serif;font-size:36px;line-height:1}
-.sc:nth-child(1) .sn{color:var(--acc)}.sc:nth-child(2) .sn{color:var(--gold)}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.pt{font-family:'DM Serif Display',serif;font-size:26px}.pt em{color:var(--acc);font-style:italic}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:22px}
+.sc{background:var(--crd);border:1px solid var(--bdr);border-radius:11px;padding:16px}
+.sn{font-family:'DM Serif Display',serif;font-size:34px;line-height:1}
+.sc:nth-child(1) .sn{color:var(--acc)}.sc:nth-child(2) .sn{color:var(--gld)}
 .sc:nth-child(3) .sn{color:var(--grn)}.sc:nth-child(4) .sn{color:var(--blu)}
-.sl{font-size:11px;color:var(--mut);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
-
-/* buttons */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.sl{font-size:11px;color:var(--mut);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .12s;white-space:nowrap}
 .bp{background:var(--acc);color:#fff}.bp:hover{background:#8b7cf8}
 .bs{background:var(--bdr);color:var(--txt)}.bs:hover{background:#333}
-.bg{background:rgba(74,222,128,.12);color:var(--grn);border:1px solid rgba(74,222,128,.2)}.bg:hover{background:rgba(74,222,128,.22)}
-.bgo{background:rgba(247,192,106,.12);color:var(--gold);border:1px solid rgba(247,192,106,.2)}.bgo:hover{background:rgba(247,192,106,.22)}
-.bd{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.2)}.bd:hover{background:rgba(248,113,113,.22)}
-.btn.sm{padding:6px 11px;font-size:12px}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.btn svg{width:14px;height:14px}
-
-/* table */
-.tw{background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
-.tb{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--bdr);flex-wrap:wrap}
-.sb{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:7px 12px;flex:1;max-width:240px}
+.bg{background:rgba(74,222,128,.12);color:var(--grn);border:1px solid rgba(74,222,128,.2)}
+.bgo{background:rgba(247,192,106,.12);color:var(--gld);border:1px solid rgba(247,192,106,.2)}
+.bd{background:rgba(248,113,113,.12);color:var(--red);border:1px solid rgba(248,113,113,.2)}
+.sm{padding:5px 10px;font-size:12px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn svg{width:13px;height:13px}
+.tw{background:var(--crd);border:1px solid var(--bdr);border-radius:11px;overflow:hidden}
+.tb{display:flex;align-items:center;gap:9px;padding:11px 14px;border-bottom:1px solid var(--bdr);flex-wrap:wrap}
+.sb{display:flex;align-items:center;gap:7px;background:var(--bg);border:1px solid var(--bdr);border-radius:7px;padding:6px 11px;flex:1;max-width:220px}
 .sb input{background:none;border:none;outline:none;color:var(--txt);font-size:13px;width:100%}
-.sb svg{color:var(--mut);width:14px;height:14px;flex-shrink:0}
+.sb svg{color:var(--mut);width:13px;height:13px;flex-shrink:0}
 table{width:100%;border-collapse:collapse}
-th{padding:10px 14px;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);font-weight:600;text-align:left;border-bottom:1px solid var(--bdr)}
-td{padding:12px 14px;border-bottom:1px solid var(--bdr);font-size:13px;vertical-align:middle}
+th{padding:9px 13px;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);font-weight:600;text-align:left;border-bottom:1px solid var(--bdr)}
+td{padding:11px 13px;border-bottom:1px solid var(--bdr);font-size:13px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(124,106,247,.025)}
-.ac{display:flex;gap:5px;flex-wrap:wrap}
-
-/* badges */
-.badge{display:inline-flex;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
-.b-pend{background:rgba(107,107,128,.18);color:var(--mut)}
-.b-sl{background:rgba(247,192,106,.15);color:var(--gold)}
-.b-sel{background:rgba(74,222,128,.15);color:var(--grn)}
-.b-rej{background:rgba(248,113,113,.15);color:var(--red)}
-.b-virt{background:rgba(96,165,250,.15);color:var(--blu)}
-.b-site{background:rgba(124,106,247,.15);color:var(--acc)}
-.b-tel{background:rgba(74,222,128,.12);color:var(--grn)}
+.ac{display:flex;gap:4px;flex-wrap:wrap}
+.badge{display:inline-flex;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.b-p{background:rgba(107,107,128,.18);color:var(--mut)}
+.b-sl{background:rgba(247,192,106,.15);color:var(--gld)}
+.b-se{background:rgba(74,222,128,.15);color:var(--grn)}
+.b-re{background:rgba(248,113,113,.15);color:var(--red)}
+.b-vi{background:rgba(96,165,250,.15);color:var(--blu)}
+.b-on{background:rgba(124,106,247,.15);color:var(--acc)}
 .b-ok{background:rgba(74,222,128,.12);color:var(--grn)}
 .b-no{background:rgba(107,107,128,.12);color:var(--mut)}
-
-/* modal */
-.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);z-index:100;align-items:center;justify-content:center}
 .mo.on{display:flex}
-.modal{background:var(--card);border:1px solid var(--bdr);border-radius:18px;width:620px;max-width:95vw;max-height:91vh;overflow-y:auto;animation:pop .2s ease}
-@keyframes pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.mh{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--bdr)}
-.mh h3{font-family:'DM Serif Display',serif;font-size:18px}
-.mx{background:var(--bdr);border:none;color:var(--mut);width:28px;height:28px;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px}
-.mx:hover{color:var(--txt);background:#333}
-.mb{padding:22px 24px}
-.mf{padding:16px 24px;border-top:1px solid var(--bdr);display:flex;gap:9px;justify-content:flex-end}
-
-/* form */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.fg{display:flex;flex-direction:column;gap:6px}
+.mdl{background:var(--crd);border:1px solid var(--bdr);border-radius:16px;width:600px;max-width:96vw;max-height:90vh;overflow-y:auto;animation:pp .18s ease}
+@keyframes pp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.mh{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--bdr)}
+.mh h3{font-family:'DM Serif Display',serif;font-size:17px}
+.mx{background:var(--bdr);border:none;color:var(--mut);width:26px;height:26px;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px}
+.mx:hover{background:#333;color:var(--txt)}
+.mb{padding:20px 22px}
+.mf{padding:14px 22px;border-top:1px solid var(--bdr);display:flex;gap:8px;justify-content:flex-end}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg{display:flex;flex-direction:column;gap:5px}
 .full{grid-column:1/-1}
-label{font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-input,select,textarea{background:var(--bg);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 12px;outline:none;transition:border-color .15s;width:100%}
+label{font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+input,select,textarea{background:var(--bg);border:1px solid var(--bdr);border-radius:7px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 11px;outline:none;transition:border-color .12s;width:100%}
 input:focus,select:focus,textarea:focus{border-color:var(--acc)}
-select option{background:var(--card)}
-textarea{resize:vertical;min-height:70px}
-
-/* file drop */
-.fd{border:2px dashed var(--bdr);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+select option{background:var(--crd)}
+textarea{resize:vertical;min-height:65px}
+.fd{border:2px dashed var(--bdr);border-radius:9px;padding:14px;text-align:center;cursor:pointer;transition:all .12s;position:relative;overflow:hidden}
 .fd:hover,.fd.dv{border-color:var(--acc);background:rgba(124,106,247,.04)}
 .fd input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.fd .fi{font-size:24px;margin-bottom:3px}
-.fd .fn{color:var(--acc);font-size:12px;font-weight:600;margin-top:3px}
-.fd .fz{font-size:11px;color:var(--mut);margin-top:1px}
-.pbar{height:3px;background:var(--bdr);border-radius:3px;margin-top:6px;display:none}
-.pbar.on{display:block}
-.pbar div{height:100%;background:var(--acc);border-radius:3px;transition:width .2s}
-
-/* settings tabs */
-.tabs{display:flex;gap:3px;background:var(--bg);border-radius:8px;padding:3px;margin-bottom:18px}
-.tab{padding:7px 14px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--mut);font-weight:500}
-.tab.on{background:var(--card);color:var(--txt);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.fd .fi{font-size:22px;margin-bottom:2px}
+.fd .fn{color:var(--acc);font-size:12px;font-weight:600;margin-top:2px}
+.fd .fz{font-size:11px;color:var(--mut)}
+.prog{height:3px;background:var(--bdr);border-radius:3px;margin-top:5px;display:none}
+.prog.on{display:block}
+.prog div{height:100%;background:var(--acc);border-radius:3px;transition:width .15s}
+.tabs{display:flex;gap:3px;background:var(--bg);border-radius:7px;padding:3px;margin-bottom:16px}
+.tab{padding:6px 13px;border-radius:5px;cursor:pointer;font-size:13px;color:var(--mut);font-weight:500}
+.tab.on{background:var(--crd);color:var(--txt);box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .tp{display:none}.tp.on{display:block}
-
-/* banner */
-.banner{background:rgba(247,192,106,.07);border:1px solid rgba(247,192,106,.22);border-radius:12px;padding:14px 16px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;font-size:13px}
-.banner svg{color:var(--gold);flex-shrink:0;margin-top:1px}
-
-/* empty */
-.empty{text-align:center;padding:40px 20px;color:var(--mut)}
-.empty .ei{font-size:38px;margin-bottom:8px}
-
-/* toast */
-#toast{position:fixed;bottom:22px;right:22px;background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:11px 16px;font-size:13px;font-weight:500;transform:translateY(70px);opacity:0;transition:all .25s;z-index:999;max-width:340px;pointer-events:none}
+.bnr{background:rgba(247,192,106,.07);border:1px solid rgba(247,192,106,.2);border-radius:11px;padding:13px 15px;margin-bottom:18px;display:flex;gap:11px;font-size:13px}
+.bnr svg{color:var(--gld);flex-shrink:0;margin-top:1px}
+.empty{text-align:center;padding:36px 20px;color:var(--mut)}
+.empty .ei{font-size:34px;margin-bottom:7px}
+#toast{position:fixed;bottom:20px;right:20px;background:var(--crd);border:1px solid var(--bdr);border-radius:9px;padding:10px 15px;font-size:13px;font-weight:500;transform:translateY(60px);opacity:0;transition:all .22s;z-index:999;max-width:320px;pointer-events:none}
 #toast.on{transform:translateY(0);opacity:1}
 #toast.ok{border-left:3px solid var(--grn)}
 #toast.er{border-left:3px solid var(--red)}
 #toast.in{border-left:3px solid var(--blu)}
-
-/* spinner */
-.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp .5s linear infinite;vertical-align:middle}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp .5s linear infinite;vertical-align:middle;margin-right:4px}
 @keyframes sp{to{transform:rotate(360deg)}}
-
-/* warn box */
-.wbox{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.18);border-radius:9px;padding:12px 14px}
-
-@media(max-width:720px){.sidebar{display:none}.main{padding:16px}.stats{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.full{grid-column:1}}
+.wbox{background:rgba(248,113,113,.06);border:1px solid rgba(248,113,113,.18);border-radius:8px;padding:11px 13px}
+/* progress overlay */
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:14px;color:#fff;font-size:14px}
+#overlay.on{display:flex}
+#ovMsg{font-weight:500}
+#ovBar{width:260px;height:5px;background:rgba(255,255,255,.2);border-radius:5px;overflow:hidden}
+#ovFill{height:100%;background:var(--acc);border-radius:5px;transition:width .2s;width:0%}
+@media(max-width:700px){.side{display:none}.main{padding:14px}.stats{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.full{grid-column:1}}
 </style>
 </head>
 <body>
 <div class="app">
-
-<aside class="sidebar">
+<aside class="side">
   <div class="logo"><h1>HR<span>Hub</span></h1><p>Hiring Automation</p></div>
   <div class="ns">Menu</div>
   <div class="ni on" onclick="go('dash')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
-  <div class="ni" onclick="go('cands')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>All Candidates</div>
+  <div class="ni" onclick="go('can')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>All Candidates</div>
   <div class="ni" onclick="go('sl')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Shortlisted</div>
   <div class="ni" onclick="go('sel')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Selected</div>
   <div class="ni" onclick="go('cfg')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</div>
 </aside>
 
 <main class="main">
-
-<!-- Setup banner -->
-<div class="banner" id="banner" style="display:none">
-  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+<div class="bnr" id="bnr" style="display:none">
+  <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
   <div style="flex:1">
-    <strong style="color:var(--gold)">Setup Required</strong> — Paste your Google Apps Script Web App URL to connect:
-    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-      <input id="urlIn" type="url" placeholder="https://script.google.com/macros/s/YOUR_ID/exec" style="flex:1;min-width:260px"/>
+    <strong style="color:var(--gld)">Setup</strong> — Paste your Apps Script Web App URL:
+    <div style="display:flex;gap:7px;margin-top:7px;flex-wrap:wrap">
+      <input id="urlIn" type="url" placeholder="https://script.google.com/macros/s/YOUR_ID/exec" style="flex:1;min-width:240px"/>
       <button class="btn bgo sm" onclick="saveURL()">Connect</button>
     </div>
-    <p style="font-size:11px;color:var(--mut);margin-top:5px">Apps Script → Deploy → Manage Deployments → copy Web App URL</p>
+    <p style="font-size:11px;color:var(--mut);margin-top:4px">Apps Script → Deploy → Manage Deployments → Web App URL</p>
   </div>
 </div>
 
@@ -168,7 +139,7 @@ textarea{resize:vertical;min-height:70px}
 <div class="page on" id="pg-dash">
   <div class="ph">
     <h2 class="pt">Hello, <em>HR Team</em> 👋</h2>
-    <button class="btn bp" onclick="go('cands');openAdd()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Candidate</button>
+    <button class="btn bp" onclick="go('can');openAdd()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Candidate</button>
   </div>
   <div class="stats">
     <div class="sc"><div class="sn" id="s0">—</div><div class="sl">Total</div></div>
@@ -177,43 +148,39 @@ textarea{resize:vertical;min-height:70px}
     <div class="sc"><div class="sn" id="s3">—</div><div class="sl">Pending</div></div>
   </div>
   <div class="tw">
-    <div class="tb"><strong style="font-size:13px">Recent Candidates</strong></div>
-    <table><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Added</th></tr></thead>
-    <tbody id="recTb"></tbody></table>
+    <div class="tb"><b style="font-size:13px">Recent Candidates</b></div>
+    <table><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Added</th></tr></thead><tbody id="recTb"></tbody></table>
   </div>
 </div>
 
 <!-- ALL CANDIDATES -->
-<div class="page" id="pg-cands">
+<div class="page" id="pg-can">
   <div class="ph">
     <h2 class="pt">All <em>Candidates</em></h2>
-    <button class="btn bp" onclick="openAdd()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Candidate</button>
+    <button class="btn bp" onclick="openAdd()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add</button>
   </div>
   <div class="tw">
     <div class="tb">
       <div class="sb"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Search..." oninput="filt(this.value)"/></div>
-      <select onchange="filtSt(this.value)" style="width:130px;padding:7px 10px;font-size:12px"><option value="">All Status</option><option>Pending</option><option>Shortlisted</option><option>Selected</option><option>Rejected</option></select>
+      <select onchange="filtS(this.value)" style="width:125px;padding:6px 10px;font-size:12px"><option value="">All Status</option><option>Pending</option><option>Shortlisted</option><option>Selected</option><option>Rejected</option></select>
     </div>
-    <table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>CV</th><th>Mail</th><th>Actions</th></tr></thead>
-    <tbody id="canTb"></tbody></table>
+    <table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>CV</th><th>Mail</th><th>Actions</th></tr></thead><tbody id="canTb"></tbody></table>
   </div>
 </div>
 
 <!-- SHORTLISTED -->
 <div class="page" id="pg-sl">
-  <div class="ph"><h2 class="pt"><em>Shortlisted</em> Candidates</h2></div>
+  <div class="ph"><h2 class="pt"><em>Shortlisted</em></h2></div>
   <div class="tw">
-    <table><thead><tr><th>Name</th><th>Email</th><th>Date</th><th>Time</th><th>Type</th><th>Mail</th><th>Action</th></tr></thead>
-    <tbody id="slTb"></tbody></table>
+    <table><thead><tr><th>Name</th><th>Email</th><th>Date</th><th>Time</th><th>Type</th><th>Mail</th><th>Action</th></tr></thead><tbody id="slTb"></tbody></table>
   </div>
 </div>
 
 <!-- SELECTED -->
 <div class="page" id="pg-sel">
-  <div class="ph"><h2 class="pt"><em>Selected</em> Candidates</h2></div>
+  <div class="ph"><h2 class="pt"><em>Selected</em></h2></div>
   <div class="tw">
-    <table><thead><tr><th>Name</th><th>Email</th><th>Offer Letter</th><th>Mail Sent</th><th>Action</th></tr></thead>
-    <tbody id="selTb"></tbody></table>
+    <table><thead><tr><th>Name</th><th>Email</th><th>Offer Letter</th><th>Mail</th><th>Action</th></tr></thead><tbody id="selTb"></tbody></table>
   </div>
 </div>
 
@@ -221,76 +188,62 @@ textarea{resize:vertical;min-height:70px}
 <div class="page" id="pg-cfg">
   <div class="ph"><h2 class="pt"><em>Settings</em></h2></div>
   <div class="tabs">
-    <div class="tab on" onclick="swTab(this,'tc-gen')">General</div>
-    <div class="tab" onclick="swTab(this,'tc-sl')">Shortlist Email</div>
-    <div class="tab" onclick="swTab(this,'tc-off')">Offer Email</div>
-    <div class="tab" onclick="swTab(this,'tc-url')">Connection</div>
+    <div class="tab on" onclick="swT(this,'tc-g')">General</div>
+    <div class="tab" onclick="swT(this,'tc-sl')">Shortlist Email</div>
+    <div class="tab" onclick="swT(this,'tc-of')">Offer Email</div>
+    <div class="tab" onclick="swT(this,'tc-u')">Connection</div>
   </div>
-  <div class="tp on" id="tc-gen">
+  <div class="tp on" id="tc-g">
     <div class="g2">
       <div class="fg"><label>Company Name</label><input id="sc_co" placeholder="Acme Corp"/></div>
       <div class="fg"><label>HR Gmail</label><input id="sc_em" type="email" placeholder="hr@company.com"/></div>
-      <div class="fg full wbox">
-        <label style="color:var(--red)">⚠ Gmail App Password</label>
+      <div class="fg full wbox"><label style="color:var(--red)">⚠ Gmail App Password</label>
         <input id="sc_pw" type="password" placeholder="xxxx xxxx xxxx xxxx"/>
-        <p style="font-size:11px;color:var(--mut);margin-top:4px">myaccount.google.com → Security → 2-Step Verification → App Passwords</p>
+        <p style="font-size:11px;color:var(--mut);margin-top:3px">myaccount.google.com → Security → 2-Step Verification → App Passwords</p>
       </div>
     </div>
-    <div style="margin-top:14px"><button class="btn bp" onclick="saveSettings()">Save Settings</button></div>
+    <div style="margin-top:12px"><button class="btn bp" onclick="saveCfg()">Save Settings</button></div>
   </div>
   <div class="tp" id="tc-sl">
-    <div class="fg" style="margin-bottom:12px">
-      <label>Subject</label><input id="sc_ss" placeholder="You are Shortlisted! — {{company}}"/>
-      <p style="font-size:11px;color:var(--mut);margin-top:4px">Variables: {{name}} {{company}} {{interview_date}} {{interview_time}} {{interview_type}}</p>
-    </div>
-    <div class="fg"><label>Body</label><textarea id="sc_sb" rows="9"></textarea></div>
-    <div style="margin-top:12px;display:flex;gap:8px">
-      <button class="btn bp" onclick="saveSettings()">Save</button>
-      <button class="btn bs" onclick="rstTpl('sl')">Reset Default</button>
-    </div>
+    <div class="fg" style="margin-bottom:10px"><label>Subject</label><input id="sc_ss"/>
+      <p style="font-size:11px;color:var(--mut);margin-top:3px">{{name}} {{company}} {{interview_date}} {{interview_time}} {{interview_type}}</p></div>
+    <div class="fg"><label>Body</label><textarea id="sc_sb" rows="8"></textarea></div>
+    <div style="margin-top:10px;display:flex;gap:7px"><button class="btn bp" onclick="saveCfg()">Save</button><button class="btn bs" onclick="rstT('sl')">Reset</button></div>
   </div>
-  <div class="tp" id="tc-off">
-    <div class="fg" style="margin-bottom:12px">
-      <label>Subject</label><input id="sc_os" placeholder="Offer Letter — Welcome to {{company}}!"/>
-      <p style="font-size:11px;color:var(--mut);margin-top:4px">Variables: {{name}} {{company}}</p>
-    </div>
-    <div class="fg"><label>Body</label><textarea id="sc_ob" rows="9"></textarea></div>
-    <div style="margin-top:12px;display:flex;gap:8px">
-      <button class="btn bp" onclick="saveSettings()">Save</button>
-      <button class="btn bs" onclick="rstTpl('off')">Reset Default</button>
-    </div>
+  <div class="tp" id="tc-of">
+    <div class="fg" style="margin-bottom:10px"><label>Subject</label><input id="sc_os"/>
+      <p style="font-size:11px;color:var(--mut);margin-top:3px">{{name}} {{company}}</p></div>
+    <div class="fg"><label>Body</label><textarea id="sc_ob" rows="8"></textarea></div>
+    <div style="margin-top:10px;display:flex;gap:7px"><button class="btn bp" onclick="saveCfg()">Save</button><button class="btn bs" onclick="rstT('of')">Reset</button></div>
   </div>
-  <div class="tp" id="tc-url">
-    <div class="fg" style="max-width:500px">
-      <label>Apps Script Web App URL</label>
-      <input id="sc_url" type="url" placeholder="https://script.google.com/macros/s/YOUR_ID/exec"/>
-    </div>
-    <div style="margin-top:12px;display:flex;gap:8px">
-      <button class="btn bp" onclick="updURL()">Update URL</button>
+  <div class="tp" id="tc-u">
+    <div class="fg" style="max-width:480px"><label>Apps Script Web App URL</label>
+      <input id="sc_url" type="url" placeholder="https://script.google.com/macros/s/YOUR_ID/exec"/></div>
+    <div style="margin-top:10px;display:flex;gap:7px">
+      <button class="btn bp" onclick="updURL()">Update</button>
       <button class="btn bs" onclick="testConn()">Test Connection</button>
     </div>
   </div>
 </div>
-
 </main>
 </div>
 
 <!-- CANDIDATE MODAL -->
-<div class="mo" id="mo-cand">
-  <div class="modal">
-    <div class="mh"><h3 id="moTitle">Add Candidate</h3><button class="mx" onclick="closeMo('mo-cand')">✕</button></div>
+<div class="mo" id="mo-c">
+  <div class="mdl">
+    <div class="mh"><h3 id="moT">Add Candidate</h3><button class="mx" onclick="closeMo('mo-c')">✕</button></div>
     <div class="mb">
       <input type="hidden" id="fID"/>
       <div class="g2">
-        <div class="fg"><label>Full Name *</label><input id="fName" placeholder="John Doe"/></div>
-        <div class="fg"><label>Email *</label><input id="fEmail" type="email" placeholder="john@example.com"/></div>
-        <div class="fg"><label>Phone</label><input id="fPhone" placeholder="+91 98765 43210"/></div>
+        <div class="fg"><label>Full Name *</label><input id="fNm" placeholder="John Doe"/></div>
+        <div class="fg"><label>Email *</label><input id="fEm" type="email" placeholder="john@example.com"/></div>
+        <div class="fg"><label>Phone</label><input id="fPh" placeholder="+91 98765 43210"/></div>
         <div class="fg"><label>Status</label>
-          <select id="fStatus"><option>Pending</option><option>Shortlisted</option><option>Selected</option><option>Rejected</option></select></div>
-        <div class="fg full"><label>Address</label><input id="fAddr" placeholder="City, State"/></div>
-        <div class="fg"><label>Interview Date</label><input id="fDate" type="date"/></div>
+          <select id="fSt"><option>Pending</option><option>Shortlisted</option><option>Selected</option><option>Rejected</option></select></div>
+        <div class="fg full"><label>Address</label><input id="fAd" placeholder="City, State"/></div>
+        <div class="fg"><label>Interview Date</label><input id="fDt" type="date"/></div>
         <div class="fg"><label>Interview Time</label>
-          <div style="display:flex;gap:6px">
+          <div style="display:flex;gap:5px">
             <select id="fHr" style="flex:1"><option value="">Hr</option>
               <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
               <option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select>
@@ -299,461 +252,412 @@ textarea{resize:vertical;min-height:70px}
           </div>
         </div>
         <div class="fg full"><label>Interview Type</label>
-          <select id="fType"><option value="">— Select —</option><option>On-site</option><option>Virtual</option><option>Telephonic</option></select></div>
+          <select id="fTy"><option value="">— Select —</option><option>On-site</option><option>Virtual</option><option>Telephonic</option></select></div>
         <div class="fg full">
-          <label>Resume / CV — PDF (max 5 MB)</label>
+          <label>Resume / CV — PDF (max 4 MB)</label>
           <div class="fd" ondragover="dov(event,this)" ondragleave="dlv(this)" ondrop="ddr(event,'cv')">
-            <div class="fi">📄</div>
-            <p style="font-size:12px;color:var(--mut)">Drop PDF or click to upload</p>
-            <div class="fn" id="cvName">No file chosen</div>
-            <div class="fz" id="cvSize"></div>
-            <div class="pbar" id="cvPbar"><div id="cvPfill" style="width:0%"></div></div>
-            <input type="file" accept=".pdf,application/pdf" onchange="pickFile(event,'cv')"/>
+            <div class="fi">📄</div><p style="font-size:12px;color:var(--mut)">Drop or click to upload PDF</p>
+            <div class="fn" id="cvN">No file chosen</div><div class="fz" id="cvZ"></div>
+            <div class="prog" id="cvP"><div id="cvPf" style="width:0%"></div></div>
+            <input type="file" accept=".pdf,application/pdf" onchange="pick(event,'cv')"/>
           </div>
         </div>
         <div class="fg full">
-          <label>Offer Letter — PDF (max 5 MB)</label>
+          <label>Offer Letter — PDF (max 4 MB)</label>
           <div class="fd" ondragover="dov(event,this)" ondragleave="dlv(this)" ondrop="ddr(event,'ol')">
-            <div class="fi">📋</div>
-            <p style="font-size:12px;color:var(--mut)">Drop PDF or click to upload</p>
-            <div class="fn" id="olName">No file chosen</div>
-            <div class="fz" id="olSize"></div>
-            <div class="pbar" id="olPbar"><div id="olPfill" style="width:0%"></div></div>
-            <input type="file" accept=".pdf,application/pdf" onchange="pickFile(event,'ol')"/>
+            <div class="fi">📋</div><p style="font-size:12px;color:var(--mut)">Drop or click to upload PDF</p>
+            <div class="fn" id="olN">No file chosen</div><div class="fz" id="olZ"></div>
+            <div class="prog" id="olP"><div id="olPf" style="width:0%"></div></div>
+            <input type="file" accept=".pdf,application/pdf" onchange="pick(event,'ol')"/>
           </div>
         </div>
-        <div class="fg full"><label>Notes</label><textarea id="fNotes" rows="2" placeholder="Any notes..."></textarea></div>
+        <div class="fg full"><label>Notes</label><textarea id="fNo" rows="2" placeholder="Any notes..."></textarea></div>
       </div>
     </div>
     <div class="mf">
-      <button class="btn bs" onclick="closeMo('mo-cand')">Cancel</button>
-      <button class="btn bp" id="savBtn" onclick="saveCandidate()">Save Candidate</button>
+      <button class="btn bs" onclick="closeMo('mo-c')">Cancel</button>
+      <button class="btn bp" id="savBtn" onclick="saveC()">Save Candidate</button>
     </div>
   </div>
 </div>
 
-
+<!-- UPLOAD OVERLAY -->
+<div id="overlay">
+  <div id="ovMsg">Uploading...</div>
+  <div id="ovBar"><div id="ovFill"></div></div>
+  <div style="font-size:12px;opacity:.6">Please wait, do not close this tab</div>
+</div>
 
 <div id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // STATE
-// ══════════════════════════════════════════════════════════════
-let URL_GAS = localStorage.getItem('hr_url') || '';
-let DATA    = [];        // all candidates
-let ftxt    = '';        // filter text
-let fsts    = '';        // filter status
-let cvB64   = '';  let cvNm = '';
-let olB64   = '';  let olNm = '';
+// ═══════════════════════════════════════════
+let GAS = localStorage.getItem('hr_gas') || '';
+let DATA = [];
+let ftx = '', fst = '';
+let cvB = '', cvN_ = '';
+let olB = '', olN_ = '';
+const CHUNK = 100000; // 100K base64 chars per GET request (~75KB actual data)
 
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // INIT
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
-  if (URL_GAS) {
-    document.getElementById('sc_url').value = URL_GAS;
-    load();
-  } else {
-    document.getElementById('banner').style.display = 'flex';
-  }
+  if (GAS) { document.getElementById('sc_url').value = GAS; boot(); }
+  else document.getElementById('bnr').style.display = 'flex';
 });
 
-// ══════════════════════════════════════════════════════════════
-// API  — GET for small, POST(no-cors)+reload for large
-// ══════════════════════════════════════════════════════════════
-async function call(action, data) {
+function boot() { load(); loadCfg(); }
+
+// ═══════════════════════════════════════════
+// CORE API — pure GET, always readable
+// ═══════════════════════════════════════════
+async function api(action, data) {
   data = data || {};
-  if (!URL_GAS) { toast('Connect your Apps Script URL first (Settings → Connection)', 'er'); throw 0; }
-
-  // Detect if payload has a PDF (large)
-  const hasFile = data['Resume Base64'] || data['Offer Letter Base64'];
-
-  if (hasFile) {
-    return callWithFile(action, data);
-  }
-
-  // Small request → GET, fully readable
-  const qs  = Object.keys(data).length ? '&data=' + enc(data) : '';
-  const url = URL_GAS + '?action=' + action + qs;
-  return getJSON(url);
-}
-
-async function callWithFile(action, data) {
-  // Step 1 — POST no-cors: browser sends it, GAS saves it, we can't read response (CORS)
-  // But GAS DOES receive and process it correctly
-  const body = JSON.stringify({ action, ...data });
-  toast('Uploading... please wait ⏳', 'in');
+  if (!GAS) { toast('Connect Apps Script URL first (Settings → Connection)', 'er'); throw 0; }
+  const qs = Object.keys(data).length ? '&data=' + encodeURIComponent(JSON.stringify(data)) : '';
+  const url = GAS + '?action=' + action + qs;
+  const ctrl = new AbortController();
+  const tid  = setTimeout(() => ctrl.abort(), 30000);
   try {
-    await fetch(URL_GAS, {
-      method:  'POST',
-      mode:    'no-cors',
-      body:    body,
-      headers: { 'Content-Type': 'text/plain' }
-    });
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(tid);
+    const txt = await res.text();
+    let j;
+    try { j = JSON.parse(txt); } catch { throw new Error('Bad response. Re-deploy Apps Script as "Anyone".'); }
+    if (!j.ok) throw new Error(j.error || 'Server error');
+    return j;
   } catch(e) {
-    throw new Error('Upload failed: ' + e.message);
+    clearTimeout(tid);
+    if (e.name === 'AbortError') throw new Error('Timed out. Try again.');
+    throw e;
   }
-
-  // Step 2 — Wait for GAS to finish (takes 1-4 seconds depending on PDF size)
-  toast('Saving to sheet... ⏳', 'in');
-  await wait(4000);
-
-  // Step 3 — GET to verify: reload candidates list and confirm record is there
-  const r = await getJSON(URL_GAS + '?action=getCandidates');
-  DATA = r.candidates || [];
-
-  // For update: check ID exists; for add: check count increased
-  if (action === 'updateCandidate') {
-    const found = DATA.find(c => String(c.ID) === String(data.ID));
-    if (!found) throw new Error('Save failed — candidate not found after upload. Try again.');
-  }
-  return { ok: true };
 }
 
-async function getJSON(url) {
-  for (let i = 1; i <= 3; i++) {
-    try {
-      const ctrl = new AbortController();
-      const tid  = setTimeout(() => ctrl.abort(), 30000);
-      const res  = await fetch(url, { signal: ctrl.signal });
-      clearTimeout(tid);
-      const txt = await res.text();
-      let j;
-      try { j = JSON.parse(txt); } catch { throw new Error('Bad response from Apps Script. Re-deploy it.'); }
-      if (!j.ok) throw new Error(j.error || 'Error');
-      return j;
-    } catch(e) {
-      if (i === 3) { if (e.name==='AbortError') throw new Error('Timed out.'); throw e; }
-      await wait(1500);
+// Upload PDFs in chunks via GET, then call finalise
+async function uploadFiles(candId, cvB64, cvName, olB64, olName) {
+  let cvChunks = 0, olChunks = 0;
+  if (cvB64) {
+    cvChunks = Math.ceil(cvB64.length / CHUNK);
+    for (let i = 0; i < cvChunks; i++) {
+      ovStatus('Uploading CV... ' + (i+1) + '/' + cvChunks, (i+1)/cvChunks*50);
+      // key includes index so each chunk has a unique row key in the Chunks sheet
+      await api('saveChunk', { key: candId + '_cv_' + i, data: cvB64.slice(i*CHUNK,(i+1)*CHUNK) });
     }
   }
+  if (olB64) {
+    olChunks = Math.ceil(olB64.length / CHUNK);
+    for (let i = 0; i < olChunks; i++) {
+      ovStatus('Uploading Offer Letter... ' + (i+1) + '/' + olChunks, 50 + (i+1)/olChunks*50);
+      await api('saveChunk', { key: candId + '_ol_' + i, data: olB64.slice(i*CHUNK,(i+1)*CHUNK) });
+    }
+  }
+  if (cvChunks > 0 || olChunks > 0) {
+    ovStatus('Saving files to sheet...', 95);
+    await api('finalise', { id: candId, cvChunks, olChunks, cvName: cvName||'CV.pdf', olName: olName||'OfferLetter.pdf' });
+  }
 }
 
-const wait  = ms => new Promise(r => setTimeout(r, ms));
-const enc   = d  => encodeURIComponent(JSON.stringify(d));
-
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // LOAD & RENDER
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 async function load() {
   try {
-    const r = await call('getCandidates');
+    const r = await api('getCandidates');
     DATA = r.candidates || [];
     render();
-  } catch(e) {
-    if (e) toast('Load failed: ' + e.message, 'er');
-  }
+  } catch(e) { if(e) toast('Load error: ' + e.message, 'er'); }
 }
 
 function render() {
-  renderDash();
-  renderCands();
-  renderSL();
-  renderSel();
-}
-
-function renderDash() {
+  const sl  = DATA.filter(c=>c.Status==='Shortlisted').length;
+  const sel = DATA.filter(c=>c.Status==='Selected').length;
+  const pen = DATA.filter(c=>c.Status==='Pending').length;
   document.getElementById('s0').textContent = DATA.length;
-  document.getElementById('s1').textContent = DATA.filter(c=>c.Status==='Shortlisted').length;
-  document.getElementById('s2').textContent = DATA.filter(c=>c.Status==='Selected').length;
-  document.getElementById('s3').textContent = DATA.filter(c=>c.Status==='Pending').length;
-  const recent = [...DATA].reverse().slice(0,6);
-  document.getElementById('recTb').innerHTML = recent.length
-    ? recent.map(c=>`<tr><td><b>${X(c.Name)}</b></td><td>${X(c.Email)}</td><td>${SB(c.Status)}</td><td>${X(c['Added On']||'')}</td></tr>`).join('')
-    : '<tr><td colspan="4"><div class="empty"><div class="ei">📭</div>No candidates yet</div></td></tr>';
-}
+  document.getElementById('s1').textContent = sl;
+  document.getElementById('s2').textContent = sel;
+  document.getElementById('s3').textContent = pen;
 
-function renderCands() {
+  // Recent
+  const rec = [...DATA].reverse().slice(0,6);
+  document.getElementById('recTb').innerHTML = rec.length
+    ? rec.map(c=>`<tr><td><b>${X(c.Name)}</b></td><td>${X(c.Email)}</td><td>${SB(c.Status)}</td><td>${X(c['Added On']||'')}</td></tr>`).join('')
+    : '<tr><td colspan="4"><div class="empty"><div class="ei">📭</div>No candidates yet</div></td></tr>';
+
+  // All candidates
   let list = DATA;
-  if (ftxt) list = list.filter(c=>(c.Name+c.Email+c.Phone+'').toLowerCase().includes(ftxt.toLowerCase()));
-  if (fsts) list = list.filter(c=>c.Status===fsts);
+  if (ftx) list = list.filter(c=>(c.Name+c.Email+c.Phone+'').toLowerCase().includes(ftx.toLowerCase()));
+  if (fst) list = list.filter(c=>c.Status===fst);
   document.getElementById('canTb').innerHTML = list.length
     ? list.map(c=>`<tr>
         <td><b>${X(c.Name)}</b><br><small style="color:var(--mut)">${X(c.Address||'')}</small></td>
         <td>${X(c.Email)}</td><td>${X(c.Phone||'')}</td>
         <td>${SB(c.Status)}</td>
-        <td>${c['Has Resume']?`<button class="btn bs sm" onclick="viewCV('${c.ID}')">👁 View</button>`:'<span style="color:var(--mut)">—</span>'}</td>
-        <td>${c['Shortlist Mail Sent']&&c['Shortlist Mail Sent']!=='No'?'<span class="badge b-ok">✓ Sent</span>':'<span class="badge b-no">—</span>'}</td>
+        <td>${c['Has Resume']?`<button class="btn bs sm" onclick="viewCV('${c.ID}')">👁 CV</button>`:'<span style="color:var(--mut)">—</span>'}</td>
+        <td>${c['Shortlist Mail Sent']&&c['Shortlist Mail Sent']!=='No'?'<span class="badge b-ok">✓</span>':'<span class="badge b-no">—</span>'}</td>
         <td class="ac">
           <button class="btn bs sm" onclick="openEdit('${c.ID}')">✏️ Edit</button>
-          <button class="btn bd sm" onclick="delC('${c.ID}')">🗑</button>
+          <button class="btn bd sm" onclick="delC('${c.ID}')">🗑 Del</button>
         </td></tr>`).join('')
-    : '<tr><td colspan="7"><div class="empty"><div class="ei">🔍</div>No candidates found</div></td></tr>';
-}
+    : '<tr><td colspan="7"><div class="empty"><div class="ei">🔍</div>No results</div></td></tr>';
 
-function renderSL() {
-  const list = DATA.filter(c=>c.Status==='Shortlisted');
-  document.getElementById('slTb').innerHTML = list.length
-    ? list.map(c=>`<tr>
+  // Shortlisted
+  const sll = DATA.filter(c=>c.Status==='Shortlisted');
+  document.getElementById('slTb').innerHTML = sll.length
+    ? sll.map(c=>`<tr>
         <td><b>${X(c.Name)}</b></td><td>${X(c.Email)}</td>
         <td>${X(c['Interview Date']||'—')}</td><td>${X(c['Interview Time']||'—')}</td>
         <td>${ITB(c['Interview Type'])}</td>
         <td>${c['Shortlist Mail Sent']&&c['Shortlist Mail Sent']!=='No'?'<span class="badge b-ok">✓ Sent</span>':'<span class="badge b-no">Pending</span>'}</td>
         <td><button class="btn bgo sm" onclick="doSL('${c.ID}')">📧 Send</button></td></tr>`).join('')
-    : '<tr><td colspan="7"><div class="empty"><div class="ei">📋</div>No shortlisted candidates. Set status to Shortlisted first.</div></td></tr>';
-}
+    : '<tr><td colspan="7"><div class="empty"><div class="ei">📋</div>No shortlisted candidates</div></td></tr>';
 
-function renderSel() {
-  const list = DATA.filter(c=>c.Status==='Selected');
-  document.getElementById('selTb').innerHTML = list.length
-    ? list.map(c=>`<tr>
+  // Selected
+  const sell = DATA.filter(c=>c.Status==='Selected');
+  document.getElementById('selTb').innerHTML = sell.length
+    ? sell.map(c=>`<tr>
         <td><b>${X(c.Name)}</b></td><td>${X(c.Email)}</td>
-        <td>${c['Has Offer']?'<span class="badge b-ok">✓ PDF uploaded</span>':'<span class="badge b-no">⚠ No PDF yet — click Edit</span>'}</td>
-        <td>${c['Offer Mail Sent']&&c['Offer Mail Sent']!=='No'?'<span class="badge b-ok">✓ Sent</span>':'<span class="badge b-no">Not sent</span>'}</td>
-        <td><button class="btn bg sm" onclick="doOffer('${c.ID}')">🎉 Send Offer</button></td></tr>`).join('')
-    : '<tr><td colspan="5"><div class="empty"><div class="ei">🏆</div>No selected candidates yet.</div></td></tr>';
+        <td>${c['Has Offer']?'<span class="badge b-ok">✓ Uploaded</span>':'<span class="badge b-no">⚠ Upload first</span>'}</td>
+        <td>${c['Offer Mail Sent']&&c['Offer Mail Sent']!=='No'?'<span class="badge b-ok">✓ Sent</span>':'<span class="badge b-no">—</span>'}</td>
+        <td><button class="btn bg sm" onclick="doOffer('${c.ID}')">🎉 Send</button></td></tr>`).join('')
+    : '<tr><td colspan="5"><div class="empty"><div class="ei">🏆</div>No selected candidates</div></td></tr>';
 }
 
-function filt(v)  { ftxt=v; renderCands(); }
-function filtSt(v){ fsts=v; renderCands(); }
+function filt(v){ ftx=v; render(); }
+function filtS(v){ fst=v; render(); }
 
-// ══════════════════════════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════════════════════════
-function go(id) {
+// ═══════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════
+function go(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   document.getElementById('pg-'+id).classList.add('on');
-  const map = {dash:0,cands:1,sl:2,sel:3,cfg:4};
-  document.querySelectorAll('.ni')[map[id]]?.classList.add('on');
+  const m={dash:0,can:1,sl:2,sel:3,cfg:4};
+  document.querySelectorAll('.ni')[m[id]]?.classList.add('on');
 }
 
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // MODAL
-// ══════════════════════════════════════════════════════════════
-function openMo(id) { document.getElementById(id).classList.add('on'); }
+// ═══════════════════════════════════════════
+function openMo(id){ document.getElementById(id).classList.add('on'); }
 function closeMo(id){ document.getElementById(id).classList.remove('on'); }
 
-function openAdd() {
-  clearForm();
-  document.getElementById('moTitle').textContent = 'Add Candidate';
-  openMo('mo-cand');
-}
+function openAdd(){ clrF(); document.getElementById('moT').textContent='Add Candidate'; openMo('mo-c'); }
 
-function openEdit(id) {
+function openEdit(id){
   const c = DATA.find(x=>x.ID===id);
-  if (!c) return;
-  clearForm();
-  document.getElementById('moTitle').textContent = 'Edit Candidate';
-  document.getElementById('fID').value     = c.ID;
-  document.getElementById('fName').value   = c.Name||'';
-  document.getElementById('fEmail').value  = c.Email||'';
-  document.getElementById('fPhone').value  = c.Phone||'';
-  document.getElementById('fAddr').value   = c.Address||'';
-  document.getElementById('fStatus').value = c.Status||'Pending';
-  document.getElementById('fDate').value   = c['Interview Date']||'';
-  document.getElementById('fType').value   = c['Interview Type']||'';
-  document.getElementById('fNotes').value  = c.Notes||'';
-  // parse time "10:30 AM"
-  const tm = (c['Interview Time']||'').match(/(\d+):(\d+)\s*(AM|PM)/i);
-  if (tm) {
-    document.getElementById('fHr').value = String(parseInt(tm[1]));
-    document.getElementById('fMn').value = tm[2];
-    document.getElementById('fAp').value = tm[3].toUpperCase();
+  if(!c) return;
+  clrF();
+  document.getElementById('moT').textContent = 'Edit Candidate';
+  document.getElementById('fID').value  = c.ID;
+  document.getElementById('fNm').value  = c.Name||'';
+  document.getElementById('fEm').value  = c.Email||'';
+  document.getElementById('fPh').value  = c.Phone||'';
+  document.getElementById('fAd').value  = c.Address||'';
+  document.getElementById('fSt').value  = c.Status||'Pending';
+  // Convert date to YYYY-MM-DD for the date input regardless of stored format
+  const rawDate = c['Interview Date'] || '';
+  let isoDate = rawDate;
+  if (rawDate && !rawDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    // Try to parse DD/MM/YYYY or other formats
+    const parts = rawDate.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+    if (parts) isoDate = parts[3] + '-' + parts[2].padStart(2,'0') + '-' + parts[1].padStart(2,'0');
   }
-  if (c['Has Resume']) document.getElementById('cvName').textContent = '✓ Already uploaded';
-  if (c['Has Offer'])  document.getElementById('olName').textContent = '✓ Already uploaded';
-  openMo('mo-cand');
+  document.getElementById('fDt').value = isoDate;
+  document.getElementById('fTy').value  = c['Interview Type']||'';
+  document.getElementById('fNo').value  = c.Notes||'';
+  const tm = (c['Interview Time']||'').match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if(tm){ document.getElementById('fHr').value=String(parseInt(tm[1])); document.getElementById('fMn').value=tm[2]; document.getElementById('fAp').value=tm[3].toUpperCase(); }
+  if(c['Has Resume']) document.getElementById('cvN').textContent='✓ Already uploaded';
+  if(c['Has Offer'])  document.getElementById('olN').textContent='✓ Already uploaded';
+  openMo('mo-c');
 }
 
-function clearForm() {
-  ['fID','fName','fEmail','fPhone','fAddr','fDate','fNotes'].forEach(i=>document.getElementById(i).value='');
-  document.getElementById('fStatus').value='Pending';
-  document.getElementById('fType').value='';
+function clrF(){
+  ['fID','fNm','fEm','fPh','fAd','fDt','fNo'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('fSt').value='Pending';
+  document.getElementById('fTy').value='';
   ['fHr','fMn','fAp'].forEach(i=>document.getElementById(i).value='');
-  document.getElementById('cvName').textContent='No file chosen';
-  document.getElementById('cvSize').textContent='';
-  document.getElementById('olName').textContent='No file chosen';
-  document.getElementById('olSize').textContent='';
-  document.getElementById('cvPbar').classList.remove('on');
-  document.getElementById('olPbar').classList.remove('on');
-  cvB64=''; cvNm=''; olB64=''; olNm='';
+  document.getElementById('cvN').textContent='No file chosen';
+  document.getElementById('cvZ').textContent='';
+  document.getElementById('olN').textContent='No file chosen';
+  document.getElementById('olZ').textContent='';
+  document.getElementById('cvP').classList.remove('on');
+  document.getElementById('olP').classList.remove('on');
+  cvB=''; cvN_=''; olB=''; olN_='';
 }
 
-// ══════════════════════════════════════════════════════════════
-// FILE HANDLING
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
+// FILE PICK
+// ═══════════════════════════════════════════
 function dov(e,el){ e.preventDefault(); el.classList.add('dv'); }
-function dlv(el)  { el.classList.remove('dv'); }
-function ddr(e,t) { e.preventDefault(); e.currentTarget.classList.remove('dv'); readFile(e.dataTransfer.files[0],t); }
-function pickFile(e,t){ readFile(e.target.files[0],t); }
+function dlv(el){ el.classList.remove('dv'); }
+function ddr(e,t){ e.preventDefault(); e.currentTarget.classList.remove('dv'); rdFile(e.dataTransfer.files[0],t); }
+function pick(e,t){ rdFile(e.target.files[0],t); }
 
-function readFile(file, t) {
-  if (!file) return;
-  if (!file.name.toLowerCase().endsWith('.pdf')) { toast('Please select a PDF file', 'er'); return; }
+function rdFile(file,t){
+  if(!file) return;
+  if(!file.name.toLowerCase().endsWith('.pdf')){ toast('PDF files only','er'); return; }
   const mb = file.size/1024/1024;
-  if (mb > 5) { toast('File too large (' + mb.toFixed(1) + ' MB). Max 5 MB.', 'er'); return; }
-  const nm = t==='cv' ? 'cvName' : 'olName';
-  const sz = t==='cv' ? 'cvSize' : 'olSize';
-  const pb = t==='cv' ? 'cvPbar' : 'olPbar';
-  const pf = t==='cv' ? 'cvPfill': 'olPfill';
-  document.getElementById(nm).textContent = file.name;
-  document.getElementById(sz).textContent = mb.toFixed(2) + ' MB';
-  document.getElementById(pb).classList.add('on');
-  document.getElementById(pf).style.width = '0%';
-  const reader = new FileReader();
-  reader.onprogress = e => { if(e.lengthComputable) document.getElementById(pf).style.width=(e.loaded/e.total*100)+'%'; };
-  reader.onload = () => {
-    document.getElementById(pf).style.width = '100%';
-    const b64 = reader.result.split(',')[1];
-    if (t==='cv') { cvB64=b64; cvNm=file.name; }
-    else          { olB64=b64; olNm=file.name; }
-    setTimeout(()=>document.getElementById(pb).classList.remove('on'),600);
-    toast((t==='cv'?'CV':'Offer letter') + ' ready ✓', 'ok');
+  if(mb>4){ toast('File too large ('+mb.toFixed(1)+' MB). Max 4 MB.','er'); return; }
+  const nEl=t==='cv'?'cvN':'olN', zEl=t==='cv'?'cvZ':'olZ';
+  const pEl=t==='cv'?'cvP':'olP', fEl=t==='cv'?'cvPf':'olPf';
+  document.getElementById(nEl).textContent=file.name;
+  document.getElementById(zEl).textContent=mb.toFixed(2)+' MB';
+  document.getElementById(pEl).classList.add('on');
+  document.getElementById(fEl).style.width='0%';
+  const r=new FileReader();
+  r.onprogress=e=>{ if(e.lengthComputable) document.getElementById(fEl).style.width=(e.loaded/e.total*100)+'%'; };
+  r.onload=()=>{
+    document.getElementById(fEl).style.width='100%';
+    const b64=r.result.split(',')[1];
+    if(t==='cv'){ cvB=b64; cvN_=file.name; } else { olB=b64; olN_=file.name; }
+    setTimeout(()=>document.getElementById(pEl).classList.remove('on'),500);
+    toast((t==='cv'?'CV':'Offer letter')+' ready ✓','ok');
   };
-  reader.onerror = ()=>toast('Could not read file','er');
-  reader.readAsDataURL(file);
+  r.onerror=()=>toast('Could not read file','er');
+  r.readAsDataURL(file);
 }
 
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // SAVE CANDIDATE
-// ══════════════════════════════════════════════════════════════
-async function saveCandidate() {
-  const name  = document.getElementById('fName').value.trim();
-  const email = document.getElementById('fEmail').value.trim();
-  if (!name)  { toast('Name is required','er'); return; }
-  if (!email) { toast('Email is required','er'); return; }
+// ═══════════════════════════════════════════
+async function saveC(){
+  const nm = document.getElementById('fNm').value.trim();
+  const em = document.getElementById('fEm').value.trim();
+  if(!nm){ toast('Name required','er'); return; }
+  if(!em){ toast('Email required','er'); return; }
 
-  const h  = document.getElementById('fHr').value;
-  const m  = document.getElementById('fMn').value;
-  const ap = document.getElementById('fAp').value;
-  const tm = (h && m && ap) ? `${h}:${m} ${ap}` : '';
+  const h=document.getElementById('fHr').value, m=document.getElementById('fMn').value, ap=document.getElementById('fAp').value;
+  const tm = (h&&m&&ap) ? h+':'+m+' '+ap : '';
 
   const d = {
-    Name: name, Email: email,
-    Phone: document.getElementById('fPhone').value,
-    Address: document.getElementById('fAddr').value,
-    Status: document.getElementById('fStatus').value,
-    'Interview Date': document.getElementById('fDate').value,
-    'Interview Time': tm,
-    'Interview Type': document.getElementById('fType').value,
-    Notes: document.getElementById('fNotes').value
+    Name:nm, Email:em,
+    Phone:document.getElementById('fPh').value,
+    Address:document.getElementById('fAd').value,
+    Status:document.getElementById('fSt').value,
+    'Interview Date':document.getElementById('fDt').value,
+    'Interview Time':tm,
+    'Interview Type':document.getElementById('fTy').value,
+    Notes:document.getElementById('fNo').value
   };
-  if (cvB64) { d['Resume Base64'] = cvB64; d['Resume Name'] = cvNm; }
-  if (olB64) { d['Offer Letter Base64'] = olB64; d['Offer Letter Name'] = olNm; }
 
-  const ID  = document.getElementById('fID').value;
-  const btn = document.getElementById('savBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span> Saving...';
+  const ID = document.getElementById('fID').value;
+  if(ID) d.ID = ID;
+
+  const btn=document.getElementById('savBtn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span>Saving...';
 
   try {
-    if (ID) {
-      await call('updateCandidate', { ID, ...d });
-      toast('Candidate updated ✓', 'ok');
-    } else {
-      await call('addCandidate', d);
-      toast('Candidate added ✓', 'ok');
+    // Step 1: save candidate data (no files) — pure GET, fast, reliable
+    const r = await api('saveCandidate', d);
+    const candId = r.id || ID;
+
+    // Step 2: upload files if any (chunked GET)
+    if(cvB || olB){
+      showOv(true);
+      await uploadFiles(candId, cvB, cvN_, olB, olN_);
+      hideOv();
     }
-    closeMo('mo-cand');
-    await load();   // always reload fresh from sheet
-  } catch(e) {
-    if (e) toast('Save failed: ' + e.message, 'er');
+
+    toast('Saved successfully ✓','ok');
+    closeMo('mo-c');
+    await load();
+  } catch(e){
+    hideOv();
+    if(e) toast('Save failed: '+e.message,'er');
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = 'Save Candidate';
+    btn.disabled=false; btn.innerHTML='Save Candidate';
   }
 }
 
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // DELETE
-// ══════════════════════════════════════════════════════════════
-async function delC(id) {
-  if (!confirm('Delete this candidate?')) return;
+// ═══════════════════════════════════════════
+async function delC(id){
+  if(!confirm('Delete this candidate? Cannot be undone.')) return;
   try {
-    await call('deleteCandidate', { id });
-    toast('Deleted', 'ok');
+    await api('deleteCandidate',{id});
+    toast('Deleted','ok');
     await load();
-  } catch(e) { if(e) toast('Error: '+e.message,'er'); }
+  } catch(e){ if(e) toast('Delete failed: '+e.message,'er'); }
 }
 
-// ══════════════════════════════════════════════════════════════
-// SEND EMAILS
-// ══════════════════════════════════════════════════════════════
-async function doSL(id) {
-  if (!confirm('Send shortlist interview email?')) return;
-  try {
-    await call('sendShortlist', { id });
-    toast('Shortlist email sent ✓', 'ok');
-    await load();
-  } catch(e) { if(e) toast('Error: '+e.message,'er'); }
+// ═══════════════════════════════════════════
+// EMAILS
+// ═══════════════════════════════════════════
+async function doSL(id){
+  if(!confirm('Send shortlist interview email to this candidate?')) return;
+  try { await api('sendShortlist',{id}); toast('Shortlist email sent ✓','ok'); await load(); }
+  catch(e){ if(e) toast('Error: '+e.message,'er'); }
 }
 
-async function doOffer(id) {
-  const c = DATA.find(x=>x.ID===id);
-  if (c && !c['Has Offer']) {
-    toast('Upload offer letter PDF first — click Edit (✏️) for this candidate','er');
-    return;
-  }
-  if (!confirm('Send offer letter email with PDF attachment?')) return;
-  try {
-    await call('sendOffer', { id });
-    toast('Offer email sent! 🎉', 'ok');
-    await load();
-  } catch(e) { if(e) toast('Error: '+e.message,'er'); }
+async function doOffer(id){
+  const c=DATA.find(x=>x.ID===id);
+  if(c&&!c['Has Offer']){ toast('Upload offer letter PDF first — click ✏️ Edit for this candidate','er'); return; }
+  if(!confirm('Send offer letter email with PDF?')) return;
+  try { await api('sendOffer',{id}); toast('Offer sent! 🎉','ok'); await load(); }
+  catch(e){ if(e) toast('Error: '+e.message,'er'); }
 }
 
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // VIEW CV
-// ══════════════════════════════════════════════════════════════
-async function viewCV(id) {
+// ═══════════════════════════════════════════
+async function viewCV(id){
   toast('Loading CV...','in');
   try {
-    const r   = await call('getCV', { id });
-    // Build a data URL and open in new tab — works on all browsers/devices
-    const url = 'data:application/pdf;base64,' + r.base64;
-    const tab = window.open();
-    if (tab) {
-      tab.document.write('<html><head><title>' + (r.name||'CV') + '</title></head><body style="margin:0"><embed src="' + url + '" type="application/pdf" width="100%" height="100%"/></body></html>');
+    const r=await api('getCV',{id});
+    const url='data:application/pdf;base64,'+r.base64;
+    const tab=window.open();
+    if(tab){
+      tab.document.write('<html><body style="margin:0"><embed src="'+url+'" type="application/pdf" width="100%" height="100%"/></body></html>');
       tab.document.close();
     } else {
-      // Popup blocked — fallback: download the PDF
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = r.name || 'CV.pdf';
-      a.click();
+      const a=document.createElement('a'); a.href=url; a.download=r.name||'CV.pdf'; a.click();
       toast('CV downloaded (popup was blocked)','ok');
     }
-  } catch(e) { if(e) toast('Cannot load CV: '+e.message,'er'); }
+  } catch(e){ if(e) toast('Error: '+e.message,'er'); }
 }
 
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
 // SETTINGS
-// ══════════════════════════════════════════════════════════════
-async function loadSettings() {
-  if (!URL_GAS) return;
+// ═══════════════════════════════════════════
+async function loadCfg(){
+  if(!GAS) return;
   try {
-    const r = await call('getSettings');
-    const s = r.settings||{};
-    document.getElementById('sc_co').value = s.company_name||'';
-    document.getElementById('sc_em').value = s.hr_email||'';
-    document.getElementById('sc_pw').value = s.hr_password||'';
-    document.getElementById('sc_ss').value = s.shortlist_subject||'';
-    document.getElementById('sc_sb').value = s.shortlist_body||'';
-    document.getElementById('sc_os').value = s.offer_subject||'';
-    document.getElementById('sc_ob').value = s.offer_body||'';
-    document.getElementById('sc_url').value= URL_GAS;
+    const r=await api('getSettings');
+    const s=r.settings||{};
+    document.getElementById('sc_co').value=s.company_name||'';
+    document.getElementById('sc_em').value=s.hr_email||'';
+    document.getElementById('sc_pw').value=s.hr_password||'';
+    document.getElementById('sc_ss').value=s.shortlist_subject||'';
+    document.getElementById('sc_sb').value=s.shortlist_body||'';
+    document.getElementById('sc_os').value=s.offer_subject||'';
+    document.getElementById('sc_ob').value=s.offer_body||'';
+    document.getElementById('sc_url').value=GAS;
   } catch(e){}
 }
 
-async function saveSettings() {
+async function saveCfg(){
   try {
-    await call('saveSettings',{
-      company_name:      document.getElementById('sc_co').value,
-      hr_email:          document.getElementById('sc_em').value,
-      hr_password:       document.getElementById('sc_pw').value,
-      shortlist_subject: document.getElementById('sc_ss').value,
-      shortlist_body:    document.getElementById('sc_sb').value,
-      offer_subject:     document.getElementById('sc_os').value,
-      offer_body:        document.getElementById('sc_ob').value
+    await api('saveSettings',{
+      company_name:document.getElementById('sc_co').value,
+      hr_email:document.getElementById('sc_em').value,
+      hr_password:document.getElementById('sc_pw').value,
+      shortlist_subject:document.getElementById('sc_ss').value,
+      shortlist_body:document.getElementById('sc_sb').value,
+      offer_subject:document.getElementById('sc_os').value,
+      offer_body:document.getElementById('sc_ob').value
     });
     toast('Settings saved ✓','ok');
   } catch(e){ if(e) toast('Error: '+e.message,'er'); }
 }
 
-function rstTpl(t) {
-  if (t==='sl'){
+function rstT(t){
+  if(t==='sl'){
     document.getElementById('sc_ss').value='You are Shortlisted! — {{company}}';
     document.getElementById('sc_sb').value='Dear {{name}},\n\nYou have been SHORTLISTED at {{company}}.\n\nInterview Details:\nDate: {{interview_date}}\nTime: {{interview_time}}\nType: {{interview_type}}\n\nPlease confirm your availability.\n\nBest regards,\nHR Team';
   } else {
@@ -762,60 +666,46 @@ function rstTpl(t) {
   }
 }
 
-function saveURL() {
-  const v = document.getElementById('urlIn').value.trim();
-  if (!v.startsWith('http')){ toast('Enter a valid URL','er'); return; }
-  URL_GAS = v;
-  localStorage.setItem('hr_url', v);
-  document.getElementById('banner').style.display='none';
-  document.getElementById('sc_url').value = v;
-  toast('Connected! Loading...','ok');
-  load(); loadSettings();
+function saveURL(){
+  const v=document.getElementById('urlIn').value.trim();
+  if(!v.startsWith('http')){ toast('Enter valid URL','er'); return; }
+  GAS=v; localStorage.setItem('hr_gas',v);
+  document.getElementById('bnr').style.display='none';
+  document.getElementById('sc_url').value=v;
+  toast('Connected ✓','ok'); boot();
 }
-
-function updURL() {
-  const v = document.getElementById('sc_url').value.trim();
-  if (!v.startsWith('http')){ toast('Enter a valid URL','er'); return; }
-  URL_GAS = v;
-  localStorage.setItem('hr_url', v);
-  toast('URL updated ✓','ok');
-  load(); loadSettings();
+function updURL(){
+  const v=document.getElementById('sc_url').value.trim();
+  if(!v.startsWith('http')){ toast('Enter valid URL','er'); return; }
+  GAS=v; localStorage.setItem('hr_gas',v);
+  toast('URL updated ✓','ok'); boot();
 }
-
-async function testConn() {
-  if (!URL_GAS){ toast('No URL set','er'); return; }
-  toast('Testing...','in');
-  try { await call('ping'); toast('Connected ✓','ok'); }
+async function testConn(){
+  if(!GAS){ toast('No URL','er'); return; }
+  try { await api('ping'); toast('Connected ✓','ok'); }
   catch(e){ if(e) toast('Failed: '+e.message,'er'); }
 }
-
-function swTab(el, id) {
+function swT(el,id){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.tp').forEach(p=>p.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById(id).classList.add('on');
+  el.classList.add('on'); document.getElementById(id).classList.add('on');
 }
 
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════
+// OVERLAY
+// ═══════════════════════════════════════════
+function showOv(v){ document.getElementById('overlay').classList.toggle('on',v); }
+function hideOv(){ document.getElementById('overlay').classList.remove('on'); document.getElementById('ovFill').style.width='0%'; }
+function ovStatus(msg,pct){ document.getElementById('ovMsg').textContent=msg; document.getElementById('ovFill').style.width=(pct||0)+'%'; }
+
+// ═══════════════════════════════════════════
 // HELPERS
-// ══════════════════════════════════════════════════════════════
-function SB(s){
-  const m={Pending:'b-pend',Shortlisted:'b-sl',Selected:'b-sel',Rejected:'b-rej'};
-  return `<span class="badge ${m[s]||'b-pend'}">${s||'Pending'}</span>`;
-}
-function ITB(t){
-  if(!t) return '—';
-  const m={'On-site':'b-site','Virtual':'b-virt','Telephonic':'b-tel'};
-  return `<span class="badge ${m[t]||'b-pend'}">${t}</span>`;
-}
-function X(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
+// ═══════════════════════════════════════════
+function SB(s){const m={Pending:'b-p',Shortlisted:'b-sl',Selected:'b-se',Rejected:'b-re'};return`<span class="badge ${m[s]||'b-p'}">${s||'Pending'}</span>`}
+function ITB(t){if(!t)return'—';const m={'On-site':'b-on',Virtual:'b-vi',Telephonic:'b-ok'};return`<span class="badge ${m[t]||'b-p'}">${t}</span>`}
+function X(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 let _tt;
-function toast(msg, type){
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.className='on '+(type||'ok');
-  clearTimeout(_tt); _tt=setTimeout(()=>el.className='',3500);
-}
+function toast(msg,type){const el=document.getElementById('toast');el.textContent=msg;el.className='on '+(type||'ok');clearTimeout(_tt);_tt=setTimeout(()=>el.className='',3500);}
 </script>
 </body>
 </html>
