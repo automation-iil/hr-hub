@@ -1390,7 +1390,7 @@
           hideOv();
         }
 
-        toast('Saved successfully ✓', 'ok');
+        toast((r.msg || 'Saved successfully') + ' ✓', 'ok');
         closeMo('mo-c');
         await load();
       } catch (e) {
