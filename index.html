@@ -434,6 +434,16 @@ async function fetchGET(url, retries=3) {
     }
   }
 }
+async function loadCandidates() {
+  try {
+    const r = await api('getCandidates');
+    candidates = r.candidates || [];
+    renderAll();
+  } catch(e) {
+    toast('Load error: ' + e.message, 'error');
+  }
+}
+
 function renderAll() {
   renderDash();
   renderCands(_ft, _fs);
