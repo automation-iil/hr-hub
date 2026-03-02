@@ -3,880 +3,781 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>HR Hub — Hiring Automation</title>
+<title>HR Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --bg: #0f0f13;
-  --surface: #18181f;
-  --card: #1e1e28;
-  --border: #2a2a38;
-  --accent: #7c6af7;
-  --accent2: #f7c06a;
-  --green: #4ade80;
-  --red: #f87171;
-  --blue: #60a5fa;
-  --text: #e8e8f0;
-  --muted: #6b6b80;
-  --font-display: 'DM Serif Display', serif;
-  --font-body: 'DM Sans', sans-serif;
-  --radius: 14px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; font-size: 15px; }
-
-/* ── Layout ── */
-.app { display: flex; min-height: 100vh; }
-.sidebar {
-  width: 230px; min-height: 100vh; background: var(--surface);
-  border-right: 1px solid var(--border); padding: 28px 0; display: flex;
-  flex-direction: column; position: sticky; top: 0; height: 100vh;
-}
-.logo { padding: 0 24px 28px; border-bottom: 1px solid var(--border); }
-.logo h1 { font-family: var(--font-display); font-size: 22px; color: var(--text); }
-.logo span { color: var(--accent); }
-.logo p { font-size: 11px; color: var(--muted); margin-top: 3px; letter-spacing: .04em; text-transform: uppercase; }
-nav { padding: 16px 0; flex: 1; }
-.nav-item {
-  display: flex; align-items: center; gap: 10px; padding: 11px 24px;
-  color: var(--muted); cursor: pointer; transition: all .2s; font-weight: 500;
-  border-left: 3px solid transparent; font-size: 14px;
-}
-.nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
-.nav-item:hover { color: var(--text); background: rgba(124,106,247,.07); }
-.nav-item.active { color: var(--accent); background: rgba(124,106,247,.1); border-left-color: var(--accent); }
-.nav-section { padding: 16px 24px 6px; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
-
-.main { flex: 1; padding: 36px 40px; overflow-y: auto; }
-.page { display: none; }
-.page.active { display: block; }
-
-/* ── Page Header ── */
-.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
-.page-title { font-family: var(--font-display); font-size: 32px; }
-.page-title span { color: var(--accent); font-style: italic; }
-
-/* ── Stats ── */
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
-.stat-card {
-  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 22px; position: relative; overflow: hidden;
-}
-.stat-card::before {
-  content: ''; position: absolute; top: 0; right: 0; width: 60px; height: 60px;
-  border-radius: 0 var(--radius) 0 60px; opacity: .15;
-}
-.stat-card.s1::before { background: var(--accent); }
-.stat-card.s2::before { background: var(--accent2); }
-.stat-card.s3::before { background: var(--green); }
-.stat-card.s4::before { background: var(--blue); }
-.stat-num { font-family: var(--font-display); font-size: 40px; line-height: 1; }
-.stat-card.s1 .stat-num { color: var(--accent); }
-.stat-card.s2 .stat-num { color: var(--accent2); }
-.stat-card.s3 .stat-num { color: var(--green); }
-.stat-card.s4 .stat-num { color: var(--blue); }
-.stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .06em; }
-
-/* ── Buttons ── */
-.btn {
-  display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px;
-  border-radius: 10px; font-family: var(--font-body); font-size: 14px; font-weight: 500;
-  cursor: pointer; transition: all .2s; border: none; white-space: nowrap;
-}
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: #9181f9; transform: translateY(-1px); }
-.btn-secondary { background: var(--border); color: var(--text); }
-.btn-secondary:hover { background: #333; }
-.btn-green { background: rgba(74,222,128,.15); color: var(--green); border: 1px solid rgba(74,222,128,.25); }
-.btn-green:hover { background: rgba(74,222,128,.25); }
-.btn-gold { background: rgba(247,192,106,.15); color: var(--accent2); border: 1px solid rgba(247,192,106,.25); }
-.btn-gold:hover { background: rgba(247,192,106,.25); }
-.btn-danger { background: rgba(248,113,113,.15); color: var(--red); border: 1px solid rgba(248,113,113,.2); }
-.btn-danger:hover { background: rgba(248,113,113,.25); }
-.btn-sm { padding: 7px 13px; font-size: 13px; }
-.btn svg { width: 16px; height: 16px; }
-
-/* ── Table ── */
-.table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.table-toolbar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 20px; border-bottom: 1px solid var(--border);
-}
-.search-box {
-  display: flex; align-items: center; gap: 10px; background: var(--bg);
-  border: 1px solid var(--border); border-radius: 10px; padding: 9px 14px; width: 260px;
-}
-.search-box input { background: none; border: none; outline: none; color: var(--text); font-family: var(--font-body); font-size: 14px; width: 100%; }
-.search-box svg { color: var(--muted); width: 16px; height: 16px; flex-shrink: 0; }
-table { width: 100%; border-collapse: collapse; }
-th { padding: 13px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; text-align: left; border-bottom: 1px solid var(--border); }
-td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: middle; }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(124,106,247,.04); }
-
-/* ── Badges ── */
-.badge {
-  display: inline-flex; align-items: center; gap: 5px; padding: 4px 11px;
-  border-radius: 20px; font-size: 12px; font-weight: 500; white-space: nowrap;
-}
-.badge-pending { background: rgba(107,107,128,.2); color: var(--muted); }
-.badge-shortlisted { background: rgba(247,192,106,.15); color: var(--accent2); }
-.badge-selected { background: rgba(74,222,128,.15); color: var(--green); }
-.badge-rejected { background: rgba(248,113,113,.15); color: var(--red); }
-.badge-virtual { background: rgba(96,165,250,.15); color: var(--blue); }
-.badge-onsite { background: rgba(124,106,247,.15); color: var(--accent); }
-.badge-telephonic { background: rgba(74,222,128,.12); color: var(--green); }
-.badge-sent { background: rgba(74,222,128,.12); color: var(--green); }
-.badge-no { background: rgba(107,107,128,.15); color: var(--muted); }
-
-/* ── Modal ── */
-.modal-overlay {
-  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7);
-  backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center;
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: var(--card); border: 1px solid var(--border); border-radius: 20px;
-  width: 620px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
-  animation: slideUp .25s ease;
-}
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; border-bottom: 1px solid var(--border); }
-.modal-header h3 { font-family: var(--font-display); font-size: 20px; }
-.modal-close { background: var(--border); border: none; color: var(--muted); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all .2s; }
-.modal-close:hover { background: #333; color: var(--text); }
-.modal-body { padding: 28px; }
-.modal-footer { padding: 20px 28px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
-
-/* ── Forms ── */
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.form-group { display: flex; flex-direction: column; gap: 7px; }
-.form-group.full { grid-column: 1 / -1; }
-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
-input, select, textarea {
-  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
-  color: var(--text); font-family: var(--font-body); font-size: 14px; padding: 11px 14px;
-  outline: none; transition: border-color .2s; width: 100%;
-}
-input:focus, select:focus, textarea:focus { border-color: var(--accent); }
-select option { background: var(--card); }
-textarea { resize: vertical; min-height: 80px; }
-
-/* ── File Upload ── */
-.file-drop {
-  border: 2px dashed var(--border); border-radius: 12px; padding: 20px;
-  text-align: center; cursor: pointer; transition: all .2s; position: relative;
-}
-.file-drop:hover, .file-drop.dragover { border-color: var(--accent); background: rgba(124,106,247,.05); }
-.file-drop input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-.file-drop-icon { font-size: 28px; margin-bottom: 6px; }
-.file-drop p { font-size: 13px; color: var(--muted); }
-.file-drop .file-name { color: var(--accent); font-weight: 500; margin-top: 4px; font-size: 13px; }
-
-/* ── PDF Viewer Modal ── */
-#pdfModal .modal { width: 820px; max-height: 92vh; }
-#pdfFrame { width: 100%; height: 75vh; border: none; border-radius: 10px; background: #fff; }
-
-/* ── Settings Tabs ── */
-.tabs { display: flex; gap: 4px; background: var(--bg); border-radius: 10px; padding: 4px; margin-bottom: 24px; }
-.tab { padding: 9px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--muted); font-weight: 500; transition: all .2s; }
-.tab.active { background: var(--card); color: var(--text); box-shadow: 0 1px 6px rgba(0,0,0,.3); }
-.tab-pane { display: none; }
-.tab-pane.active { display: block; }
-
-/* ── Toast ── */
-#toast {
-  position: fixed; bottom: 28px; right: 28px; background: var(--card);
-  border: 1px solid var(--border); border-radius: 12px; padding: 14px 20px;
-  display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500;
-  transform: translateY(80px); opacity: 0; transition: all .3s; z-index: 999; max-width: 360px;
-}
-#toast.show { transform: translateY(0); opacity: 1; }
-#toast.success { border-left: 3px solid var(--green); }
-#toast.error { border-left: 3px solid var(--red); }
-
-/* ── GAS URL Banner ── */
-.setup-banner {
-  background: rgba(247,192,106,.08); border: 1px solid rgba(247,192,106,.25);
-  border-radius: var(--radius); padding: 16px 20px; margin-bottom: 24px;
-  display: flex; align-items: center; gap: 14px; font-size: 14px;
-}
-.setup-banner svg { color: var(--accent2); flex-shrink: 0; }
-.setup-banner strong { color: var(--accent2); }
-.setup-banner input { margin: 0; padding: 8px 12px; font-size: 13px; }
-.actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
-
-/* ── Empty State ── */
-.empty { text-align: center; padding: 60px 20px; color: var(--muted); }
-.empty-icon { font-size: 48px; margin-bottom: 12px; }
-.empty p { font-size: 15px; }
-
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-  .main { padding: 20px; }
-  .stats { grid-template-columns: 1fr 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
-  .form-group.full { grid-column: 1; }
-}
+:root{--bg:#0f0f13;--surface:#18181f;--card:#1e1e28;--border:#2a2a38;--accent:#7c6af7;--accent2:#f7c06a;--green:#4ade80;--red:#f87171;--blue:#60a5fa;--text:#e8e8f0;--muted:#6b6b80;--fd:'DM Serif Display',serif;--fb:'DM Sans',sans-serif;--r:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;font-size:15px}
+.app{display:flex;min-height:100vh}
+.sidebar{width:230px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:28px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.logo{padding:0 24px 24px;border-bottom:1px solid var(--border)}
+.logo h1{font-family:var(--fd);font-size:22px}.logo span{color:var(--accent)}
+.logo p{font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:.04em;text-transform:uppercase}
+nav{padding:12px 0;flex:1}
+.ni{display:flex;align-items:center;gap:10px;padding:11px 24px;color:var(--muted);cursor:pointer;transition:all .2s;font-weight:500;border-left:3px solid transparent;font-size:14px}
+.ni svg{width:18px;height:18px;flex-shrink:0}
+.ni:hover{color:var(--text);background:rgba(124,106,247,.07)}
+.ni.active{color:var(--accent);background:rgba(124,106,247,.1);border-left-color:var(--accent)}
+.ns{padding:14px 24px 4px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.main{flex:1;padding:32px 36px;overflow-y:auto}
+.page{display:none}.page.active{display:block}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.pt{font-family:var(--fd);font-size:30px}.pt span{color:var(--accent);font-style:italic}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;right:0;width:55px;height:55px;border-radius:0 var(--r) 0 55px;opacity:.15}
+.sc.s1::before{background:var(--accent)}.sc.s2::before{background:var(--accent2)}.sc.s3::before{background:var(--green)}.sc.s4::before{background:var(--blue)}
+.sn{font-family:var(--fd);font-size:38px;line-height:1}
+.sc.s1 .sn{color:var(--accent)}.sc.s2 .sn{color:var(--accent2)}.sc.s3 .sn{color:var(--green)}.sc.s4 .sn{color:var(--blue)}
+.sl{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:10px;font-family:var(--fb);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;border:none;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:#9181f9;transform:translateY(-1px)}
+.btn-secondary{background:var(--border);color:var(--text)}.btn-secondary:hover{background:#333}
+.btn-green{background:rgba(74,222,128,.15);color:var(--green);border:1px solid rgba(74,222,128,.25)}.btn-green:hover{background:rgba(74,222,128,.25)}
+.btn-gold{background:rgba(247,192,106,.15);color:var(--accent2);border:1px solid rgba(247,192,106,.25)}.btn-gold:hover{background:rgba(247,192,106,.25)}
+.btn-danger{background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.2)}.btn-danger:hover{background:rgba(248,113,113,.25)}
+.btn-sm{padding:7px 12px;font-size:13px}.btn svg{width:16px;height:16px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.tw{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.tb{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap}
+.sb{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:9px 14px;width:240px}
+.sb input{background:none;border:none;outline:none;color:var(--text);font-family:var(--fb);font-size:14px;width:100%}
+.sb svg{color:var(--muted);width:16px;height:16px;flex-shrink:0}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:13px 14px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(124,106,247,.03)}
+.badge{display:inline-flex;align-items:center;padding:4px 11px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap}
+.bp{background:rgba(107,107,128,.2);color:var(--muted)}
+.bsl{background:rgba(247,192,106,.15);color:var(--accent2)}
+.bsel{background:rgba(74,222,128,.15);color:var(--green)}
+.brej{background:rgba(248,113,113,.15);color:var(--red)}
+.bv{background:rgba(96,165,250,.15);color:var(--blue)}
+.bo{background:rgba(124,106,247,.15);color:var(--accent)}
+.bt{background:rgba(74,222,128,.12);color:var(--green)}
+.bsent{background:rgba(74,222,128,.12);color:var(--green)}
+.bno{background:rgba(107,107,128,.15);color:var(--muted)}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:100;align-items:center;justify-content:center}
+.mo.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;width:640px;max-width:96vw;max-height:92vh;overflow-y:auto;animation:su .22s ease}
+@keyframes su{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.mh{display:flex;align-items:center;justify-content:space-between;padding:22px 26px;border-bottom:1px solid var(--border)}
+.mh h3{font-family:var(--fd);font-size:20px}
+.mc{background:var(--border);border:none;color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s}
+.mc:hover{background:#333;color:var(--text)}
+.mb{padding:26px}.mf{padding:18px 26px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+.fg{display:flex;flex-direction:column;gap:7px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.full{grid-column:1/-1}
+label{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+input,select,textarea{background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--fb);font-size:14px;padding:10px 13px;outline:none;transition:border-color .2s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+select option{background:var(--card)}
+textarea{resize:vertical;min-height:76px}
+.fd{border:2px dashed var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.fd:hover,.fd.dv{border-color:var(--accent);background:rgba(124,106,247,.05)}
+.fd input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.fd-icon{font-size:26px;margin-bottom:4px}.fd p{font-size:13px;color:var(--muted)}
+.fd .fn{color:var(--accent);font-weight:500;margin-top:4px;font-size:13px}
+.fd .sz{font-size:11px;color:var(--muted);margin-top:2px}
+#pdfModal .modal{width:860px;max-height:94vh}
+#pdfFrame{width:100%;height:78vh;border:none;border-radius:10px;background:#fff}
+.tabs{display:flex;gap:4px;background:var(--bg);border-radius:10px;padding:4px;margin-bottom:22px}
+.tab{padding:9px 18px;border-radius:8px;cursor:pointer;font-size:14px;color:var(--muted);font-weight:500;transition:all .2s}
+.tab.active{background:var(--card);color:var(--text);box-shadow:0 1px 6px rgba(0,0,0,.3)}
+.tp{display:none}.tp.active{display:block}
+#toast{position:fixed;bottom:26px;right:26px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 18px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;transform:translateY(80px);opacity:0;transition:all .3s;z-index:999;max-width:380px}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.success{border-left:3px solid var(--green)}
+#toast.error{border-left:3px solid var(--red)}
+#toast.info{border-left:3px solid var(--blue)}
+.banner{background:rgba(247,192,106,.08);border:1px solid rgba(247,192,106,.25);border-radius:var(--r);padding:14px 18px;margin-bottom:22px;display:flex;align-items:flex-start;gap:12px;font-size:14px}
+.banner svg{color:var(--accent2);flex-shrink:0;margin-top:2px}
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty-icon{font-size:44px;margin-bottom:10px}.empty p{font-size:14px}
+.ac{display:flex;gap:6px;flex-wrap:wrap}
+.prog{height:4px;background:var(--border);border-radius:4px;margin-top:6px;overflow:hidden;display:none}
+.prog.show{display:block}
+.prog-bar{height:100%;background:var(--accent);border-radius:4px;transition:width .3s}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--red);margin-bottom:14px}
+@media(max-width:768px){.sidebar{display:none}.main{padding:18px}.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.full{grid-column:1}}
 </style>
 </head>
 <body>
 <div class="app">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="logo">
-      <h1>HR<span>Hub</span></h1>
-      <p>Hiring Automation</p>
-    </div>
-    <nav>
-      <div class="nav-section">Main</div>
-      <div class="nav-item active" onclick="showPage('dashboard')">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-        Dashboard
-      </div>
-      <div class="nav-item" onclick="showPage('candidates')">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        All Candidates
-      </div>
-      <div class="nav-section">Actions</div>
-      <div class="nav-item" onclick="showPage('shortlisted')">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        Shortlisted
-      </div>
-      <div class="nav-item" onclick="showPage('selected')">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        Selected
-      </div>
-      <div class="nav-section">System</div>
-      <div class="nav-item" onclick="showPage('settings')">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        Settings
-      </div>
-    </nav>
-  </aside>
+<aside class="sidebar">
+  <div class="logo">
+    <h1>HR<span>Hub</span></h1>
+    <p>Hiring Automation</p>
+  </div>
+  <nav>
+    <div class="ns">Main</div>
+    <div class="ni active" onclick="showPage('dashboard')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+    <div class="ni" onclick="showPage('candidates')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>All Candidates</div>
+    <div class="ns">Actions</div>
+    <div class="ni" onclick="showPage('shortlisted')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Shortlisted</div>
+    <div class="ni" onclick="showPage('selected')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Selected</div>
+    <div class="ns">System</div>
+    <div class="ni" onclick="showPage('settings')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</div>
+  </nav>
+</aside>
 
-  <main class="main">
-    <!-- Setup Banner -->
-    <div class="setup-banner" id="setupBanner">
-      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <div>
-        <strong>First Time Setup:</strong> Paste your Google Apps Script Web App URL below, then click Save.
-        <div style="display:flex;gap:10px;margin-top:8px;align-items:center;">
-          <input id="gasUrlInput" type="url" placeholder="https://script.google.com/macros/s/YOUR_ID/exec" style="width:420px;"/>
-          <button class="btn btn-gold btn-sm" onclick="saveGasUrl()">Save URL</button>
-        </div>
+<main class="main">
+  <!-- Setup Banner -->
+  <div class="banner" id="setupBanner" style="display:none">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div style="flex:1">
+      <strong style="color:var(--accent2)">First Time Setup</strong> — Paste your Google Apps Script Web App URL:
+      <div style="display:flex;gap:10px;margin-top:8px;align-items:center;flex-wrap:wrap">
+        <input id="gasInput" type="url" placeholder="https://script.google.com/macros/s/YOUR_ID/exec" style="flex:1;min-width:280px"/>
+        <button class="btn btn-gold btn-sm" onclick="saveGasUrl()">Save & Connect</button>
       </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:6px">Get this from Apps Script → Deploy → Manage Deployments → copy Web App URL</p>
     </div>
+  </div>
 
-    <!-- DASHBOARD -->
-    <div class="page active" id="page-dashboard">
-      <div class="page-header">
-        <h2 class="page-title">Good day, <span>HR Team</span> 👋</h2>
-        <button class="btn btn-primary" onclick="showPage('candidates');openAddModal()">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Add Candidate
-        </button>
-      </div>
-      <div class="stats">
-        <div class="stat-card s1"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total Candidates</div></div>
-        <div class="stat-card s2"><div class="stat-num" id="stat-shortlisted">0</div><div class="stat-label">Shortlisted</div></div>
-        <div class="stat-card s3"><div class="stat-num" id="stat-selected">0</div><div class="stat-label">Selected</div></div>
-        <div class="stat-card s4"><div class="stat-num" id="stat-pending">0</div><div class="stat-label">Pending</div></div>
-      </div>
-      <div class="table-wrap">
-        <div class="table-toolbar"><span style="font-weight:600;">Recent Candidates</span></div>
-        <table><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Added</th></tr></thead>
-        <tbody id="recentTbody"></tbody></table>
-      </div>
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="ph">
+      <h2 class="pt">Good day, <span>HR Team</span> 👋</h2>
+      <button class="btn btn-primary" onclick="showPage('candidates');openAddModal()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Candidate</button>
     </div>
+    <div class="stats">
+      <div class="sc s1"><div class="sn" id="st0">—</div><div class="sl">Total</div></div>
+      <div class="sc s2"><div class="sn" id="st1">—</div><div class="sl">Shortlisted</div></div>
+      <div class="sc s3"><div class="sn" id="st2">—</div><div class="sl">Selected</div></div>
+      <div class="sc s4"><div class="sn" id="st3">—</div><div class="sl">Pending</div></div>
+    </div>
+    <div class="tw">
+      <div class="tb"><span style="font-weight:600">Recent Candidates</span></div>
+      <table><thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Added</th></tr></thead>
+      <tbody id="recentTb"></tbody></table>
+    </div>
+  </div>
 
-    <!-- ALL CANDIDATES -->
-    <div class="page" id="page-candidates">
-      <div class="page-header">
-        <h2 class="page-title">All <span>Candidates</span></h2>
-        <button class="btn btn-primary" onclick="openAddModal()">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Add Candidate
-        </button>
-      </div>
-      <div class="table-wrap">
-        <div class="table-toolbar">
-          <div class="search-box">
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" placeholder="Search candidates..." oninput="filterTable(this.value)"/>
-          </div>
-          <select onchange="filterStatus(this.value)" style="width:150px;">
-            <option value="">All Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Shortlisted">Shortlisted</option>
-            <option value="Selected">Selected</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-        </div>
-        <table><thead><tr>
-          <th>Name</th><th>Email</th><th>Phone</th><th>Status</th>
-          <th>CV</th><th>Mail Sent</th><th>Actions</th>
-        </tr></thead>
-        <tbody id="candidatesTbody"></tbody></table>
-      </div>
+  <!-- ALL CANDIDATES -->
+  <div class="page" id="page-candidates">
+    <div class="ph">
+      <h2 class="pt">All <span>Candidates</span></h2>
+      <button class="btn btn-primary" onclick="openAddModal()">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Candidate</button>
     </div>
+    <div class="tw">
+      <div class="tb">
+        <div class="sb">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search name, email..." oninput="filterTable(this.value)"/>
+        </div>
+        <select onchange="filterStatus(this.value)" style="width:150px">
+          <option value="">All Status</option>
+          <option>Pending</option><option>Shortlisted</option><option>Selected</option><option>Rejected</option>
+        </select>
+      </div>
+      <table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>CV</th><th>Mail</th><th>Actions</th></tr></thead>
+      <tbody id="candTb"></tbody></table>
+    </div>
+  </div>
 
-    <!-- SHORTLISTED -->
-    <div class="page" id="page-shortlisted">
-      <div class="page-header"><h2 class="page-title"><span>Shortlisted</span> Candidates</h2></div>
-      <div class="table-wrap">
-        <table><thead><tr>
-          <th>Name</th><th>Email</th><th>Interview Date</th>
-          <th>Interview Time</th><th>Type</th><th>Mail Status</th><th>Action</th>
-        </tr></thead>
-        <tbody id="shortlistTbody"></tbody></table>
-      </div>
+  <!-- SHORTLISTED -->
+  <div class="page" id="page-shortlisted">
+    <div class="ph"><h2 class="pt"><span>Shortlisted</span> Candidates</h2></div>
+    <div class="tw">
+      <table><thead><tr><th>Name</th><th>Email</th><th>Date</th><th>Time</th><th>Type</th><th>Mail Status</th><th>Action</th></tr></thead>
+      <tbody id="slTb"></tbody></table>
     </div>
+  </div>
 
-    <!-- SELECTED -->
-    <div class="page" id="page-selected">
-      <div class="page-header"><h2 class="page-title"><span>Selected</span> Candidates</h2></div>
-      <div class="table-wrap">
-        <table><thead><tr>
-          <th>Name</th><th>Email</th><th>Offer Letter</th><th>Offer Mail Sent</th><th>Action</th>
-        </tr></thead>
-        <tbody id="selectedTbody"></tbody></table>
-      </div>
+  <!-- SELECTED -->
+  <div class="page" id="page-selected">
+    <div class="ph"><h2 class="pt"><span>Selected</span> Candidates</h2></div>
+    <div class="tw">
+      <table><thead><tr><th>Name</th><th>Email</th><th>Offer Letter</th><th>Mail Sent</th><th>Action</th></tr></thead>
+      <tbody id="selTb"></tbody></table>
     </div>
+  </div>
 
-    <!-- SETTINGS -->
-    <div class="page" id="page-settings">
-      <div class="page-header"><h2 class="page-title"><span>Settings</span></h2></div>
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab('general')">General</div>
-        <div class="tab" onclick="switchTab('shortlist-tpl')">Shortlist Email</div>
-        <div class="tab" onclick="switchTab('offer-tpl')">Offer Email</div>
+  <!-- SETTINGS -->
+  <div class="page" id="page-settings">
+    <div class="ph"><h2 class="pt"><span>Settings</span></h2></div>
+    <div class="tabs">
+      <div class="tab active" onclick="swTab(this,'tg')">General</div>
+      <div class="tab" onclick="swTab(this,'tsl')">Shortlist Email</div>
+      <div class="tab" onclick="swTab(this,'tol')">Offer Email</div>
+      <div class="tab" onclick="swTab(this,'tconn')">Connection</div>
+    </div>
+    <div class="tp active" id="tg">
+      <div class="grid2">
+        <div class="fg"><label>Company Name</label><input id="s_company" placeholder="Acme Corp"/></div>
+        <div class="fg full warn-box" style="background:rgba(248,113,113,.05);border:1px solid rgba(248,113,113,.2);padding:14px;border-radius:12px;">
+          <label style="color:var(--red)">⚠ Gmail App Password (stored in your Google Sheet only)</label>
+          <input id="s_pass" type="password" placeholder="xxxx xxxx xxxx xxxx"/>
+          <p style="font-size:12px;color:var(--muted);margin-top:5px">myaccount.google.com → Security → 2-Step Verification → App Passwords → Generate</p>
+        </div>
+        <div class="fg"><label>HR Gmail Address</label><input id="s_email" type="email" placeholder="hr@company.com"/></div>
       </div>
-      <div class="tab-pane active" id="tab-general">
-        <div class="form-grid">
-          <div class="form-group"><label>HR Gmail Address</label><input id="s_hr_email" type="email" placeholder="hr@company.com"/></div>
-          <div class="form-group"><label>Company Name</label><input id="s_company_name" placeholder="Acme Corp"/></div>
-          <div class="form-group full" style="background:rgba(248,113,113,.05);border:1px solid rgba(248,113,113,.2);padding:16px;border-radius:12px;">
-            <label style="color:var(--red);">⚠ Gmail App Password (NOT your Gmail password)</label>
-            <input id="s_hr_password" type="password" placeholder="xxxx xxxx xxxx xxxx"/>
-            <p style="font-size:12px;color:var(--muted);margin-top:6px;">Go to myaccount.google.com → Security → 2-Step Verification → App passwords → Generate</p>
-          </div>
-        </div>
-        <div style="margin-top:20px;display:flex;gap:10px;">
-          <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
-        </div>
+      <div style="margin-top:18px"><button class="btn btn-primary" onclick="saveSettings()">Save Settings</button></div>
+    </div>
+    <div class="tp" id="tsl">
+      <div class="fg" style="margin-bottom:16px">
+        <label>Subject</label>
+        <input id="s_ss" placeholder="You are Shortlisted! — {{company}}"/>
+        <p style="font-size:12px;color:var(--muted);margin-top:5px">Variables: <code style="background:var(--border);padding:2px 6px;border-radius:4px">{{name}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:4px">{{company}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:4px">{{interview_date}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:4px">{{interview_time}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:4px">{{interview_type}}</code></p>
       </div>
-      <div class="tab-pane" id="tab-shortlist-tpl">
-        <div class="form-group" style="margin-bottom:18px;">
-          <label>Subject Line</label>
-          <input id="s_shortlist_subject" placeholder="You are Shortlisted! — {{company}}"/>
-          <p style="font-size:12px;color:var(--muted);margin-top:5px;">Variables: <code style="background:var(--border);padding:2px 6px;border-radius:5px;">{{name}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:5px;">{{company}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:5px;">{{interview_date}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:5px;">{{interview_time}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:5px;">{{interview_type}}</code></p>
-        </div>
-        <div class="form-group">
-          <label>Email Body</label>
-          <textarea id="s_shortlist_body" rows="10" placeholder="Dear {{name}}, ..."></textarea>
-        </div>
-        <div style="margin-top:18px;display:flex;gap:10px;">
-          <button class="btn btn-primary" onclick="saveSettings()">Save Template</button>
-          <button class="btn btn-secondary" onclick="resetShortlistTemplate()">Reset to Default</button>
-        </div>
-      </div>
-      <div class="tab-pane" id="tab-offer-tpl">
-        <div class="form-group" style="margin-bottom:18px;">
-          <label>Subject Line</label>
-          <input id="s_offer_subject" placeholder="Offer Letter — Welcome to {{company}}!"/>
-          <p style="font-size:12px;color:var(--muted);margin-top:5px;">Variables: <code style="background:var(--border);padding:2px 6px;border-radius:5px;">{{name}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:5px;">{{company}}</code></p>
-        </div>
-        <div class="form-group">
-          <label>Email Body</label>
-          <textarea id="s_offer_body" rows="10" placeholder="Dear {{name}}, congratulations..."></textarea>
-        </div>
-        <div style="margin-top:18px;display:flex;gap:10px;">
-          <button class="btn btn-primary" onclick="saveSettings()">Save Template</button>
-          <button class="btn btn-secondary" onclick="resetOfferTemplate()">Reset to Default</button>
-        </div>
+      <div class="fg"><label>Body</label><textarea id="s_sb" rows="10"></textarea></div>
+      <div style="margin-top:16px;display:flex;gap:10px">
+        <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+        <button class="btn btn-secondary" onclick="resetTpl('sl')">Reset Default</button>
       </div>
     </div>
-  </main>
+    <div class="tp" id="tol">
+      <div class="fg" style="margin-bottom:16px">
+        <label>Subject</label>
+        <input id="s_os" placeholder="Offer Letter — Welcome to {{company}}!"/>
+        <p style="font-size:12px;color:var(--muted);margin-top:5px">Variables: <code style="background:var(--border);padding:2px 6px;border-radius:4px">{{name}}</code> <code style="background:var(--border);padding:2px 6px;border-radius:4px">{{company}}</code></p>
+      </div>
+      <div class="fg"><label>Body</label><textarea id="s_ob" rows="10"></textarea></div>
+      <div style="margin-top:16px;display:flex;gap:10px">
+        <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+        <button class="btn btn-secondary" onclick="resetTpl('ol')">Reset Default</button>
+      </div>
+    </div>
+    <div class="tp" id="tconn">
+      <div class="fg" style="max-width:560px">
+        <label>Google Apps Script Web App URL</label>
+        <input id="s_url" type="url" placeholder="https://script.google.com/macros/s/YOUR_ID/exec"/>
+        <p style="font-size:12px;color:var(--muted);margin-top:5px">Apps Script → Deploy → Manage Deployments → copy URL</p>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px">
+        <button class="btn btn-primary" onclick="updateGasUrl()">Update URL</button>
+        <button class="btn btn-secondary" onclick="testConn()">Test Connection</button>
+      </div>
+    </div>
+  </div>
+</main>
 </div>
 
-<!-- ADD/EDIT CANDIDATE MODAL -->
-<div class="modal-overlay" id="candidateModal">
+<!-- ADD/EDIT MODAL -->
+<div class="mo" id="candModal">
   <div class="modal">
-    <div class="modal-header">
-      <h3 id="modalTitle">Add Candidate</h3>
-      <button class="modal-close" onclick="closeModal('candidateModal')">✕</button>
-    </div>
-    <div class="modal-body">
+    <div class="mh"><h3 id="mTitle">Add Candidate</h3><button class="mc" onclick="closeModal('candModal')">✕</button></div>
+    <div class="mb">
       <input type="hidden" id="f_id"/>
-      <div class="form-grid">
-        <div class="form-group"><label>Full Name *</label><input id="f_name" placeholder="John Doe"/></div>
-        <div class="form-group"><label>Email *</label><input id="f_email" type="email" placeholder="john@email.com"/></div>
-        <div class="form-group"><label>Phone</label><input id="f_phone" placeholder="+91 98765 43210"/></div>
-        <div class="form-group"><label>Status</label>
-          <select id="f_status">
-            <option value="Pending">Pending</option>
-            <option value="Shortlisted">Shortlisted</option>
-            <option value="Selected">Selected</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-        </div>
-        <div class="form-group full"><label>Address</label><input id="f_address" placeholder="City, State"/></div>
-        <div class="form-group"><label>Interview Date</label><input id="f_interview_date" type="date"/></div>
-        <div class="form-group"><label>Interview Time</label>
-          <div style="display:flex;gap:8px;">
-            <select id="f_ih" style="flex:1;"><option value="">Hour</option>
-              <option>1</option><option>2</option><option>3</option><option>4</option>
-              <option>5</option><option>6</option><option>7</option><option>8</option>
-              <option>9</option><option>10</option><option>11</option><option>12</option>
-            </select>
-            <select id="f_im" style="flex:1;"><option value="">Min</option>
-              <option>00</option><option>15</option><option>30</option><option>45</option>
-            </select>
-            <select id="f_ia" style="flex:1;"><option value="">AM/PM</option>
-              <option>AM</option><option>PM</option>
-            </select>
+      <div class="grid2">
+        <div class="fg"><label>Full Name *</label><input id="f_name" placeholder="John Doe"/></div>
+        <div class="fg"><label>Email *</label><input id="f_email" type="email" placeholder="john@email.com"/></div>
+        <div class="fg"><label>Phone</label><input id="f_phone" placeholder="+91 98765 43210"/></div>
+        <div class="fg"><label>Status</label>
+          <select id="f_status"><option>Pending</option><option>Shortlisted</option><option>Selected</option><option>Rejected</option></select></div>
+        <div class="fg full"><label>Address</label><input id="f_addr" placeholder="City, State"/></div>
+        <div class="fg"><label>Interview Date</label><input id="f_date" type="date"/></div>
+        <div class="fg"><label>Interview Time</label>
+          <div style="display:flex;gap:8px">
+            <select id="f_hr" style="flex:1"><option value="">Hr</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+              <option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select>
+            <select id="f_mn" style="flex:1"><option value="">Min</option>
+              <option>00</option><option>15</option><option>30</option><option>45</option></select>
+            <select id="f_ap" style="flex:1"><option value="">AM/PM</option><option>AM</option><option>PM</option></select>
           </div>
         </div>
-        <div class="form-group full"><label>Interview Type</label>
-          <select id="f_interview_type">
-            <option value="">— Select —</option>
-            <option value="On-site">🏢 On-site</option>
-            <option value="Virtual">💻 Virtual</option>
-            <option value="Telephonic">📞 Telephonic</option>
-          </select>
-        </div>
-        <div class="form-group full">
-          <label>Resume / CV (PDF)</label>
-          <div class="file-drop" id="resumeDrop" ondragover="dragOver(event,'resumeDrop')" ondragleave="dragLeave('resumeDrop')" ondrop="dropFile(event,'resume')">
-            <div class="file-drop-icon">📄</div>
-            <p>Drop PDF here or click to upload</p>
-            <div class="file-name" id="resumeFileName">No file selected</div>
-            <input type="file" accept=".pdf" onchange="handleFile(event,'resume')"/>
+        <div class="fg full"><label>Interview Type</label>
+          <select id="f_itype"><option value="">— Select —</option><option>On-site</option><option>Virtual</option><option>Telephonic</option></select></div>
+        <div class="fg full">
+          <label>Resume / CV — PDF (max 8 MB)</label>
+          <div class="fd" id="resumeDrop" ondragover="dov(event,'resumeDrop')" ondragleave="dlv('resumeDrop')" ondrop="dodr(event,'resume')">
+            <div class="fd-icon">📄</div><p>Drop PDF or click to upload</p>
+            <div class="fn" id="rName">No file selected</div>
+            <div class="sz" id="rSize"></div>
+            <div class="prog" id="rProg"><div class="prog-bar" id="rProgBar" style="width:0%"></div></div>
+            <input type="file" accept=".pdf,application/pdf" onchange="handleFile(event,'resume')"/>
           </div>
         </div>
-        <div class="form-group full">
-          <label>Offer Letter PDF</label>
-          <div class="file-drop" id="offerDrop" ondragover="dragOver(event,'offerDrop')" ondragleave="dragLeave('offerDrop')" ondrop="dropFile(event,'offer')">
-            <div class="file-drop-icon">📋</div>
-            <p>Drop PDF here or click to upload</p>
-            <div class="file-name" id="offerFileName">No file selected</div>
-            <input type="file" accept=".pdf" onchange="handleFile(event,'offer')"/>
+        <div class="fg full">
+          <label>Offer Letter — PDF (max 8 MB)</label>
+          <div class="fd" id="offerDrop" ondragover="dov(event,'offerDrop')" ondragleave="dlv('offerDrop')" ondrop="dodr(event,'offer')">
+            <div class="fd-icon">📋</div><p>Drop PDF or click to upload</p>
+            <div class="fn" id="oName">No file selected</div>
+            <div class="sz" id="oSize"></div>
+            <div class="prog" id="oProg"><div class="prog-bar" id="oProgBar" style="width:0%"></div></div>
+            <input type="file" accept=".pdf,application/pdf" onchange="handleFile(event,'offer')"/>
           </div>
         </div>
-        <div class="form-group full"><label>Notes</label><textarea id="f_notes" rows="2" placeholder="Any additional notes..."></textarea></div>
+        <div class="fg full"><label>Notes</label><textarea id="f_notes" rows="2" placeholder="Any notes..."></textarea></div>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('candidateModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveCandidate()">
+    <div class="mf">
+      <button class="btn btn-secondary" onclick="closeModal('candModal')">Cancel</button>
+      <button class="btn btn-primary" id="saveBtn" onclick="saveCandidate()">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Save
-      </button>
+        Save Candidate</button>
     </div>
   </div>
 </div>
 
-<!-- PDF VIEWER MODAL -->
-<div class="modal-overlay" id="pdfModal">
-  <div class="modal" style="width:820px;">
-    <div class="modal-header">
-      <h3>📄 View CV</h3>
-      <button class="modal-close" onclick="closeModal('pdfModal');clearPdfFrame()">✕</button>
-    </div>
-    <div class="modal-body" style="padding:16px;">
-      <iframe id="pdfFrame"></iframe>
-    </div>
+<!-- PDF VIEWER -->
+<div class="mo" id="pdfModal">
+  <div class="modal" style="width:860px">
+    <div class="mh"><h3>📄 View CV</h3><button class="mc" onclick="closeModal('pdfModal');document.getElementById('pdfFrame').src=''">✕</button></div>
+    <div class="mb" style="padding:14px"><iframe id="pdfFrame"></iframe></div>
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast"><span id="toastMsg"></span></div>
 
 <script>
-// ── State ──────────────────────────────────────────────────────
-let GAS_URL = localStorage.getItem('hr_hub_gas_url') || '';
+// ══════════════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════════════
+let GAS_URL = localStorage.getItem('hh_gas') || '';
 let candidates = [];
-let resumeBase64 = ''; let resumeName = '';
-let offerBase64 = ''; let offerName = '';
+let rB64='', rName_='', oB64='', oName_='';
+let _ft='', _fs='';
 
-// ── Init ───────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════════════════
 window.onload = () => {
   if (GAS_URL) {
-    document.getElementById('gasUrlInput').value = GAS_URL;
-    document.getElementById('setupBanner').style.display = 'none';
+    document.getElementById('gasInput') && (document.getElementById('gasInput').value = GAS_URL);
+    document.getElementById('s_url').value = GAS_URL;
+  } else {
+    document.getElementById('setupBanner').style.display = 'flex';
   }
-  loadCandidates();
-  loadSettings();
+  if (GAS_URL) { loadCandidates(); loadSettings(); }
 };
 
-function saveGasUrl() {
-  const v = document.getElementById('gasUrlInput').value.trim();
-  if (!v.startsWith('http')) { toast('Please enter a valid URL', 'error'); return; }
-  GAS_URL = v;
-  localStorage.setItem('hr_hub_gas_url', v);
-  document.getElementById('setupBanner').style.display = 'none';
-  toast('URL saved! Loading data...', 'success');
-  loadCandidates();
-}
+// ══════════════════════════════════════════════════════════════
+//  API — uses GET to avoid CORS preflight completely
+//  Large payloads (base64) use POST fallback
+// ══════════════════════════════════════════════════════════════
+async function api(action, data={}) {
+  if (!GAS_URL) { toast('Set your Apps Script URL first (Settings → Connection)', 'error'); throw new Error('No URL'); }
 
-// ── API Call ───────────────────────────────────────────────────
-async function api(action, data = {}, retries = 3) {
-  if (!GAS_URL) { toast('Please set your Google Apps Script URL first', 'error'); throw new Error('No GAS URL'); }
-  const body = JSON.stringify({ action, ...data });
-  for (let attempt = 1; attempt <= retries; attempt++) {
+  const payload = JSON.stringify(data);
+  // If payload is large (PDF upload), use POST; otherwise GET
+  const usePost = payload.length > 2000;
+
+  for (let attempt=1; attempt<=3; attempt++) {
     try {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 25000); // 25s timeout
-      const res = await fetch(GAS_URL, {
-        method: 'POST', body,
-        headers: { 'Content-Type': 'text/plain' },
-        signal: controller.signal
-      });
-      clearTimeout(timer);
-      const json = await res.json();
-      if (!json.ok) throw new Error(json.error || 'Unknown error');
+      const ctrl = new AbortController();
+      const tid  = setTimeout(() => ctrl.abort(), 30000);
+      let res;
+      if (usePost) {
+        res = await fetch(GAS_URL, {
+          method:'POST',
+          body: JSON.stringify({action, ...data}),
+          headers:{'Content-Type':'text/plain'},
+          signal: ctrl.signal
+        });
+      } else {
+        const url = GAS_URL + '?action=' + encodeURIComponent(action) +
+          (payload !== '{}' ? '&data=' + encodeURIComponent(payload) : '');
+        res = await fetch(url, { signal: ctrl.signal });
+      }
+      clearTimeout(tid);
+      const text = await res.text();
+      let json;
+      try { json = JSON.parse(text); }
+      catch(e) { throw new Error('Bad response from server. Check your Apps Script deployment.'); }
+      if (!json.ok) throw new Error(json.error || 'Server error');
       return json;
-    } catch (e) {
-      if (attempt === retries) throw new Error(e.name === 'AbortError' ? 'Request timed out. Please try again.' : e.message);
-      await new Promise(r => setTimeout(r, 1000 * attempt)); // wait 1s, 2s before retry
+    } catch(e) {
+      if (attempt === 3) {
+        if (e.name === 'AbortError') throw new Error('Request timed out after 30s. Google servers may be slow — try again.');
+        throw e;
+      }
+      await sleep(1500 * attempt);
+      toast(`Retrying... (${attempt}/3)`, 'info');
     }
   }
 }
 
-// ── Load Data ─────────────────────────────────────────────────
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+// ══════════════════════════════════════════════════════════════
+//  LOAD DATA
+// ══════════════════════════════════════════════════════════════
 async function loadCandidates() {
   try {
     const r = await api('getCandidates');
     candidates = r.candidates || [];
     renderAll();
-  } catch (e) {
-    if (GAS_URL) toast('Failed to load: ' + e.message, 'error');
+  } catch(e) {
+    toast('Load error: ' + e.message, 'error');
   }
 }
 
 function renderAll() {
-  renderDashboard();
-  renderCandidatesTable();
-  renderShortlisted();
-  renderSelected();
+  renderDash();
+  renderCands(_ft, _fs);
+  renderSL();
+  renderSel();
 }
 
-// ── Dashboard ─────────────────────────────────────────────────
-function renderDashboard() {
-  const total = candidates.length;
-  const sl = candidates.filter(c => c.Status === 'Shortlisted').length;
-  const sel = candidates.filter(c => c.Status === 'Selected').length;
-  const pend = candidates.filter(c => c.Status === 'Pending').length;
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-shortlisted').textContent = sl;
-  document.getElementById('stat-selected').textContent = sel;
-  document.getElementById('stat-pending').textContent = pend;
-  const tbody = document.getElementById('recentTbody');
-  const recent = [...candidates].reverse().slice(0, 5);
-  tbody.innerHTML = recent.length ? recent.map(c => `
-    <tr>
-      <td><strong>${esc(c.Name)}</strong></td>
-      <td>${esc(c.Email)}</td>
-      <td>${statusBadge(c.Status)}</td>
-      <td>${esc(c['Added On'] || '')}</td>
-    </tr>`).join('') : '<tr><td colspan="4"><div class="empty"><div class="empty-icon">📭</div><p>No candidates yet</p></div></td></tr>';
+// ══════════════════════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════════════════════
+function renderDash() {
+  const sl  = candidates.filter(c=>c.Status==='Shortlisted').length;
+  const sel = candidates.filter(c=>c.Status==='Selected').length;
+  const pen = candidates.filter(c=>c.Status==='Pending').length;
+  document.getElementById('st0').textContent = candidates.length;
+  document.getElementById('st1').textContent = sl;
+  document.getElementById('st2').textContent = sel;
+  document.getElementById('st3').textContent = pen;
+  const rec = [...candidates].reverse().slice(0,6);
+  document.getElementById('recentTb').innerHTML = rec.length
+    ? rec.map(c=>`<tr><td><strong>${x(c.Name)}</strong></td><td>${x(c.Email)}</td><td>${sb(c.Status)}</td><td>${x(c['Added On']||'')}</td></tr>`).join('')
+    : '<tr><td colspan="4"><div class="empty"><div class="empty-icon">📭</div><p>No candidates yet</p></div></td></tr>';
 }
 
-// ── Candidates Table ──────────────────────────────────────────
-function renderCandidatesTable(filter = '', statusFilter = '') {
-  const tbody = document.getElementById('candidatesTbody');
+// ══════════════════════════════════════════════════════════════
+//  CANDIDATES TABLE
+// ══════════════════════════════════════════════════════════════
+function renderCands(ft='', fs='') {
   let list = candidates;
-  if (filter) list = list.filter(c => (c.Name + c.Email + c.Phone).toLowerCase().includes(filter.toLowerCase()));
-  if (statusFilter) list = list.filter(c => c.Status === statusFilter);
-  tbody.innerHTML = list.length ? list.map(c => `
-    <tr>
-      <td><strong>${esc(c.Name)}</strong><br/><small style="color:var(--muted)">${esc(c.Address || '')}</small></td>
-      <td>${esc(c.Email)}</td>
-      <td>${esc(c.Phone || '')}</td>
-      <td>${statusBadge(c.Status)}</td>
-      <td>${c['Has Resume'] ? `<button class="btn btn-sm btn-secondary" onclick="viewCV('${c.ID}')">👁 View</button>` : '<span style="color:var(--muted);font-size:13px;">—</span>'}</td>
-      <td>${c['Shortlist Mail Sent'] && c['Shortlist Mail Sent'] !== 'No' ? `<span class="badge badge-sent">✓ Sent</span>` : '<span class="badge badge-no">Not sent</span>'}</td>
-      <td class="actions-cell">
-        <button class="btn btn-sm btn-secondary" onclick="openEditModal('${c.ID}')">✏️ Edit</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteCandidate('${c.ID}')">🗑</button>
-      </td>
-    </tr>`).join('') : '<tr><td colspan="7"><div class="empty"><div class="empty-icon">🔍</div><p>No candidates found</p></div></td></tr>';
+  if (ft) list = list.filter(c=>(c.Name+c.Email+c.Phone+'').toLowerCase().includes(ft.toLowerCase()));
+  if (fs) list = list.filter(c=>c.Status===fs);
+  document.getElementById('candTb').innerHTML = list.length
+    ? list.map(c=>`<tr>
+        <td><strong>${x(c.Name)}</strong><br/><small style="color:var(--muted)">${x(c.Address||'')}</small></td>
+        <td>${x(c.Email)}</td><td>${x(c.Phone||'')}</td>
+        <td>${sb(c.Status)}</td>
+        <td>${c['Has Resume']?`<button class="btn btn-sm btn-secondary" onclick="viewCV('${c.ID}')">👁 CV</button>`:'<span style="color:var(--muted)">—</span>'}</td>
+        <td>${c['Shortlist Mail Sent']&&c['Shortlist Mail Sent']!=='No'?'<span class="badge bsent">✓ Sent</span>':'<span class="badge bno">—</span>'}</td>
+        <td class="ac">
+          <button class="btn btn-sm btn-secondary" onclick="openEdit('${c.ID}')">✏️</button>
+          <button class="btn btn-sm btn-danger" onclick="delCand('${c.ID}')">🗑</button>
+        </td></tr>`).join('')
+    : '<tr><td colspan="7"><div class="empty"><div class="empty-icon">🔍</div><p>No candidates found</p></div></td></tr>';
 }
 
-// ── Shortlisted ───────────────────────────────────────────────
-function renderShortlisted() {
-  const tbody = document.getElementById('shortlistTbody');
-  const list = candidates.filter(c => c.Status === 'Shortlisted');
-  tbody.innerHTML = list.length ? list.map(c => `
-    <tr>
-      <td><strong>${esc(c.Name)}</strong></td>
-      <td>${esc(c.Email)}</td>
-      <td>${esc(c['Interview Date'] || '—')}</td>
-      <td>${esc(c['Interview Time'] || '—')}</td>
-      <td>${interviewBadge(c['Interview Type'])}</td>
-      <td>${c['Shortlist Mail Sent'] && c['Shortlist Mail Sent'] !== 'No' ? `<span class="badge badge-sent">✓ Sent</span>` : '<span class="badge badge-no">Pending</span>'}</td>
-      <td>
-        <button class="btn btn-sm btn-gold" onclick="sendShortlist('${c.ID}')">📧 Send Email</button>
-      </td>
-    </tr>`).join('') : '<tr><td colspan="7"><div class="empty"><div class="empty-icon">📋</div><p>No shortlisted candidates. Mark candidates as "Shortlisted" first.</p></div></td></tr>';
+function filterTable(v){ _ft=v; renderCands(_ft,_fs); }
+function filterStatus(v){ _fs=v; renderCands(_ft,_fs); }
+
+// ══════════════════════════════════════════════════════════════
+//  SHORTLISTED
+// ══════════════════════════════════════════════════════════════
+function renderSL() {
+  const list = candidates.filter(c=>c.Status==='Shortlisted');
+  document.getElementById('slTb').innerHTML = list.length
+    ? list.map(c=>`<tr>
+        <td><strong>${x(c.Name)}</strong></td><td>${x(c.Email)}</td>
+        <td>${x(c['Interview Date']||'—')}</td><td>${x(c['Interview Time']||'—')}</td>
+        <td>${itb(c['Interview Type'])}</td>
+        <td>${c['Shortlist Mail Sent']&&c['Shortlist Mail Sent']!=='No'?'<span class="badge bsent">✓ Sent</span>':'<span class="badge bno">Not sent</span>'}</td>
+        <td><button class="btn btn-sm btn-gold" onclick="sendSL('${c.ID}')">📧 Send</button></td></tr>`).join('')
+    : '<tr><td colspan="7"><div class="empty"><div class="empty-icon">📋</div><p>No shortlisted candidates. Set a candidate\'s status to Shortlisted first.</p></div></td></tr>';
 }
 
-// ── Selected ──────────────────────────────────────────────────
-function renderSelected() {
-  const tbody = document.getElementById('selectedTbody');
-  const list = candidates.filter(c => c.Status === 'Selected');
-  tbody.innerHTML = list.length ? list.map(c => `
-    <tr>
-      <td><strong>${esc(c.Name)}</strong></td>
-      <td>${esc(c.Email)}</td>
-      <td>${c['Has Offer'] ? '<span class="badge badge-sent">✓ Uploaded</span>' : '<span class="badge badge-no">Not uploaded</span>'}</td>
-      <td>${c['Offer Mail Sent'] && c['Offer Mail Sent'] !== 'No' ? `<span class="badge badge-sent">✓ Sent</span>` : '<span class="badge badge-no">Pending</span>'}</td>
-      <td>
-        <button class="btn btn-sm btn-green" onclick="sendOffer('${c.ID}')">🎉 Send Offer Email</button>
-      </td>
-    </tr>`).join('') : '<tr><td colspan="5"><div class="empty"><div class="empty-icon">🏆</div><p>No selected candidates yet.</p></div></td></tr>';
+// ══════════════════════════════════════════════════════════════
+//  SELECTED
+// ══════════════════════════════════════════════════════════════
+function renderSel() {
+  const list = candidates.filter(c=>c.Status==='Selected');
+  document.getElementById('selTb').innerHTML = list.length
+    ? list.map(c=>`<tr>
+        <td><strong>${x(c.Name)}</strong></td><td>${x(c.Email)}</td>
+        <td>${c['Has Offer']?'<span class="badge bsent">✓ PDF uploaded</span>':'<span class="badge bno">⚠ No PDF — edit candidate</span>'}</td>
+        <td>${c['Offer Mail Sent']&&c['Offer Mail Sent']!=='No'?'<span class="badge bsent">✓ Sent</span>':'<span class="badge bno">Not sent</span>'}</td>
+        <td><button class="btn btn-sm btn-green" onclick="sendOffer('${c.ID}')" ${!c['Has Offer']?'title="Upload offer letter PDF first"':''}>🎉 Send Offer</button></td></tr>`).join('')
+    : '<tr><td colspan="5"><div class="empty"><div class="empty-icon">🏆</div><p>No selected candidates yet.</p></div></td></tr>';
 }
 
-// ── Filter ────────────────────────────────────────────────────
-let _filterText = '', _filterStatus = '';
-function filterTable(v) { _filterText = v; renderCandidatesTable(_filterText, _filterStatus); }
-function filterStatus(v) { _filterStatus = v; renderCandidatesTable(_filterText, _filterStatus); }
-
-// ── Navigation ────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════════════════════
 function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-item')[['dashboard','candidates','shortlisted','selected','settings'].indexOf(id)]?.classList.add('active');
-  if (id === 'shortlisted') renderShortlisted();
-  if (id === 'selected') renderSelected();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const idx = ['dashboard','candidates','shortlisted','selected','settings'].indexOf(id);
+  document.querySelectorAll('.ni')[idx]?.classList.add('active');
 }
 
-// ── Modals ────────────────────────────────────────────────────
-function openAddModal() {
-  clearForm();
-  document.getElementById('modalTitle').textContent = 'Add Candidate';
-  openModal('candidateModal');
-}
-function openEditModal(id) {
-  const c = candidates.find(x => x.ID === id);
+// ══════════════════════════════════════════════════════════════
+//  MODALS
+// ══════════════════════════════════════════════════════════════
+function openAddModal() { clearForm(); document.getElementById('mTitle').textContent='Add Candidate'; openModal('candModal'); }
+function openEdit(id) {
+  const c = candidates.find(c=>c.ID===id);
   if (!c) return;
   clearForm();
-  document.getElementById('modalTitle').textContent = 'Edit Candidate';
-  document.getElementById('f_id').value = c.ID;
-  document.getElementById('f_name').value = c.Name || '';
-  document.getElementById('f_email').value = c.Email || '';
-  document.getElementById('f_phone').value = c.Phone || '';
-  document.getElementById('f_address').value = c.Address || '';
-  document.getElementById('f_status').value = c.Status || 'Pending';
-  document.getElementById('f_interview_date').value = c['Interview Date'] || '';
-  // Parse stored time like "10:30 AM" into dropdowns
-  const tStr = c['Interview Time'] || '';
-  const tMatch = tStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
-  if (tMatch) {
-    document.getElementById('f_ih').value = String(parseInt(tMatch[1]));
-    document.getElementById('f_im').value = tMatch[2];
-    document.getElementById('f_ia').value = tMatch[3].toUpperCase();
-  } else {
-    ['f_ih','f_im','f_ia'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('mTitle').textContent='Edit Candidate';
+  document.getElementById('f_id').value    = c.ID;
+  document.getElementById('f_name').value  = c.Name||'';
+  document.getElementById('f_email').value = c.Email||'';
+  document.getElementById('f_phone').value = c.Phone||'';
+  document.getElementById('f_addr').value  = c.Address||'';
+  document.getElementById('f_status').value= c.Status||'Pending';
+  document.getElementById('f_date').value  = c['Interview Date']||'';
+  document.getElementById('f_itype').value = c['Interview Type']||'';
+  document.getElementById('f_notes').value = c.Notes||'';
+  // Parse time e.g. "10:30 AM"
+  const tm = (c['Interview Time']||'').match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (tm) {
+    document.getElementById('f_hr').value = String(parseInt(tm[1]));
+    document.getElementById('f_mn').value = tm[2];
+    document.getElementById('f_ap').value = tm[3].toUpperCase();
   }
-  document.getElementById('f_interview_type').value = c['Interview Type'] || '';
-  document.getElementById('f_notes').value = c.Notes || '';
-  if (c['Has Resume']) document.getElementById('resumeFileName').textContent = 'Already uploaded ✓';
-  if (c['Has Offer']) document.getElementById('offerFileName').textContent = 'Already uploaded ✓';
-  openModal('candidateModal');
+  if (c['Has Resume']) document.getElementById('rName').textContent='✓ Already uploaded';
+  if (c['Has Offer'])  document.getElementById('oName').textContent='✓ Already uploaded';
+  openModal('candModal');
 }
 function clearForm() {
-  ['f_id','f_name','f_email','f_phone','f_address','f_interview_date','f_notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('f_status').value = 'Pending';
-  document.getElementById('f_interview_type').value = '';
-  ['f_ih','f_im','f_ia'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('resumeFileName').textContent = 'No file selected';
-  document.getElementById('offerFileName').textContent = 'No file selected';
-  resumeBase64 = ''; resumeName = ''; offerBase64 = ''; offerName = '';
+  ['f_id','f_name','f_email','f_phone','f_addr','f_date','f_notes'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('f_status').value='Pending';
+  document.getElementById('f_itype').value='';
+  ['f_hr','f_mn','f_ap'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('rName').textContent='No file selected';
+  document.getElementById('rSize').textContent='';
+  document.getElementById('oName').textContent='No file selected';
+  document.getElementById('oSize').textContent='';
+  document.getElementById('rProg').classList.remove('show');
+  document.getElementById('oProg').classList.remove('show');
+  rB64=''; rName_=''; oB64=''; oName_='';
 }
 function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 
-// ── File Handling ─────────────────────────────────────────────
-function handleFile(e, type) {
-  const file = e.target.files[0];
-  if (!file) return;
-  readFileB64(file, type);
-}
-function dropFile(e, type) {
+// ══════════════════════════════════════════════════════════════
+//  FILE HANDLING — max 8MB, progress bar
+// ══════════════════════════════════════════════════════════════
+const MAX_MB = 8;
+
+function handleFile(e, type) { processFile(e.target.files[0], type); }
+function dodr(e, type) {
   e.preventDefault();
-  const file = e.dataTransfer.files[0];
-  if (!file || file.type !== 'application/pdf') { toast('Please drop a PDF file', 'error'); return; }
-  readFileB64(file, type);
+  document.getElementById(type==='resume'?'resumeDrop':'offerDrop').classList.remove('dv');
+  processFile(e.dataTransfer.files[0], type);
 }
-function readFileB64(file, type) {
+function dov(e,id){ e.preventDefault(); document.getElementById(id).classList.add('dv'); }
+function dlv(id){ document.getElementById(id).classList.remove('dv'); }
+
+function processFile(file, type) {
+  if (!file) return;
+  if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+    toast('Please select a PDF file only', 'error'); return;
+  }
+  const mb = file.size/1024/1024;
+  if (mb > MAX_MB) { toast(`File too large (${mb.toFixed(1)} MB). Max is ${MAX_MB} MB.`, 'error'); return; }
+
+  const nameEl  = document.getElementById(type==='resume'?'rName':'oName');
+  const sizeEl  = document.getElementById(type==='resume'?'rSize':'oSize');
+  const progEl  = document.getElementById(type==='resume'?'rProg':'oProg');
+  const barEl   = document.getElementById(type==='resume'?'rProgBar':'oProgBar');
+
+  nameEl.textContent = file.name;
+  sizeEl.textContent = mb.toFixed(2) + ' MB';
+  progEl.classList.add('show');
+  barEl.style.width = '0%';
+
   const reader = new FileReader();
+  reader.onprogress = e => { if(e.lengthComputable) barEl.style.width=(e.loaded/e.total*100)+'%'; };
   reader.onload = () => {
+    barEl.style.width = '100%';
     const b64 = reader.result.split(',')[1];
-    if (type === 'resume') { resumeBase64 = b64; resumeName = file.name; document.getElementById('resumeFileName').textContent = file.name; }
-    else { offerBase64 = b64; offerName = file.name; document.getElementById('offerFileName').textContent = file.name; }
+    if (type==='resume') { rB64=b64; rName_=file.name; }
+    else                 { oB64=b64; oName_=file.name; }
+    setTimeout(()=>progEl.classList.remove('show'), 800);
   };
+  reader.onerror = () => toast('Failed to read file', 'error');
   reader.readAsDataURL(file);
 }
-function dragOver(e, id) { e.preventDefault(); document.getElementById(id).classList.add('dragover'); }
-function dragLeave(id) { document.getElementById(id).classList.remove('dragover'); }
 
-// ── Save Candidate ────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  SAVE CANDIDATE
+// ══════════════════════════════════════════════════════════════
 async function saveCandidate() {
-  const name = document.getElementById('f_name').value.trim();
+  const name  = document.getElementById('f_name').value.trim();
   const email = document.getElementById('f_email').value.trim();
-  if (!name || !email) { toast('Name and Email are required', 'error'); return; }
-  const id = document.getElementById('f_id').value;
+  if (!name||!email) { toast('Name and Email are required', 'error'); return; }
+
+  const hr = document.getElementById('f_hr').value;
+  const mn = document.getElementById('f_mn').value;
+  const ap = document.getElementById('f_ap').value;
+  const timeStr = hr&&mn&&ap ? `${hr}:${mn} ${ap}` : '';
+
   const data = {
     Name: name, Email: email,
     Phone: document.getElementById('f_phone').value,
-    Address: document.getElementById('f_address').value,
+    Address: document.getElementById('f_addr').value,
     Status: document.getElementById('f_status').value,
-    'Interview Date': document.getElementById('f_interview_date').value,
-    'Interview Time': (() => {
-      const h = document.getElementById('f_ih').value;
-      const m = document.getElementById('f_im').value;
-      const a = document.getElementById('f_ia').value;
-      return h && m && a ? h + ':' + m + ' ' + a : '';
-    })(),
-    'Interview Type': document.getElementById('f_interview_type').value,
+    'Interview Date': document.getElementById('f_date').value,
+    'Interview Time': timeStr,
+    'Interview Type': document.getElementById('f_itype').value,
     Notes: document.getElementById('f_notes').value,
   };
-  if (resumeBase64) { data['Resume Base64'] = resumeBase64; data['Resume Name'] = resumeName; }
-  if (offerBase64) { data['Offer Letter Base64'] = offerBase64; data['Offer Letter Name'] = offerName; }
+  if (rB64) { data['Resume Base64']=rB64; data['Resume Name']=rName_; }
+  if (oB64) { data['Offer Letter Base64']=oB64; data['Offer Letter Name']=oName_; }
+
+  const id  = document.getElementById('f_id').value;
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Saving...';
+
   try {
-    if (id) { await api('updateCandidate', { ID: id, ...data }); toast('Candidate updated!', 'success'); }
-    else { await api('addCandidate', data); toast('Candidate added!', 'success'); }
-    closeModal('candidateModal');
+    if (id) { await api('updateCandidate', {ID:id, ...data}); toast('Updated!', 'success'); }
+    else    { await api('addCandidate', data);                  toast('Candidate added!', 'success'); }
+    closeModal('candModal');
     loadCandidates();
-  } catch(e) { toast('Error: ' + e.message, 'error'); }
+  } catch(e) {
+    toast('Save failed: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save Candidate';
+  }
 }
 
-// ── Delete ────────────────────────────────────────────────────
-async function deleteCandidate(id) {
-  if (!confirm('Delete this candidate?')) return;
-  try { await api('deleteCandidate', { id }); toast('Deleted', 'success'); loadCandidates(); }
-  catch(e) { toast('Error: ' + e.message, 'error'); }
+// ══════════════════════════════════════════════════════════════
+//  DELETE
+// ══════════════════════════════════════════════════════════════
+async function delCand(id) {
+  if (!confirm('Delete this candidate? This cannot be undone.')) return;
+  try { await api('deleteCandidate',{id}); toast('Deleted','success'); loadCandidates(); }
+  catch(e) { toast('Error: '+e.message,'error'); }
 }
 
-// ── Send Emails ───────────────────────────────────────────────
-async function sendShortlist(id) {
-  if (!confirm('Send shortlist email to this candidate?')) return;
-  try {
-    toast('Sending...', 'success');
-    await api('sendShortlist', { id });
-    toast('Shortlist email sent! ✓', 'success');
-    loadCandidates();
-  } catch(e) { toast('Error: ' + e.message, 'error'); }
+// ══════════════════════════════════════════════════════════════
+//  SEND EMAILS
+// ══════════════════════════════════════════════════════════════
+async function sendSL(id) {
+  if (!confirm('Send shortlist interview invitation email?')) return;
+  toast('Sending email...','info');
+  try { await api('sendShortlist',{id}); toast('Shortlist email sent ✓','success'); loadCandidates(); }
+  catch(e) { toast('Error: '+e.message,'error'); }
 }
+
 async function sendOffer(id) {
-  if (!confirm('Send offer letter email to this candidate?')) return;
-  try {
-    toast('Sending...', 'success');
-    await api('sendOffer', { id });
-    toast('Offer email sent! 🎉', 'success');
-    loadCandidates();
-  } catch(e) { toast('Error: ' + e.message, 'error'); }
+  const c = candidates.find(c=>c.ID===id);
+  if (c && !c['Has Offer']) {
+    toast('Upload offer letter PDF first — click Edit (✏️) for this candidate','error'); return;
+  }
+  if (!confirm('Send offer letter email with PDF attachment?')) return;
+  toast('Sending offer letter...','info');
+  try { await api('sendOffer',{id}); toast('Offer email sent! 🎉','success'); loadCandidates(); }
+  catch(e) { toast('Error: '+e.message,'error'); }
 }
 
-// ── View CV ───────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  VIEW CV
+// ══════════════════════════════════════════════════════════════
 async function viewCV(id) {
+  toast('Loading CV...','info');
   try {
-    toast('Loading CV...', 'success');
-    // We need to fetch the full candidate with base64
-    const r = await api('getCandidates');
-    // Actually we need to get full data - let's use a workaround
-    // We stored "Has Resume" but need base64. Let's call a direct fetch.
-    // The GAS getCandidates strips base64, so we need to open a GET URL
-    const url = `${GAS_URL}?action=getCandidates`;
-    // Instead, load all and find — but base64 is stripped. 
-    // Best approach: open in embed using data URL - but we'd need to fetch full.
-    // Use getCV action
-    const res = await fetch(GAS_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'getCV', id }),
-      headers: { 'Content-Type': 'text/plain' }
-    });
-    const data = await res.json();
-    if (data.ok && data.base64) {
-      const byteStr = atob(data.base64);
-      const arr = new Uint8Array(byteStr.length);
-      for (let i = 0; i < byteStr.length; i++) arr[i] = byteStr.charCodeAt(i);
-      const blob = new Blob([arr], { type: 'application/pdf' });
-      const blobUrl = URL.createObjectURL(blob);
-      document.getElementById('pdfFrame').src = blobUrl;
-      openModal('pdfModal');
-    } else {
-      toast('CV not found', 'error');
-    }
-  } catch(e) { toast('Error loading CV: ' + e.message, 'error'); }
+    const r = await api('getCV',{id});
+    const bytes = atob(r.base64);
+    const arr   = new Uint8Array(bytes.length);
+    for (let i=0;i<bytes.length;i++) arr[i]=bytes.charCodeAt(i);
+    const blob  = new Blob([arr],{type:'application/pdf'});
+    document.getElementById('pdfFrame').src = URL.createObjectURL(blob);
+    openModal('pdfModal');
+  } catch(e) { toast('Error: '+e.message,'error'); }
 }
-function clearPdfFrame() { document.getElementById('pdfFrame').src = ''; }
 
-// ── Settings ──────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════════════════════════
 async function loadSettings() {
   if (!GAS_URL) return;
   try {
     const r = await api('getSettings');
-    const s = r.settings || {};
-    document.getElementById('s_hr_email').value = s.hr_email || '';
-    document.getElementById('s_hr_password').value = s.hr_password || '';
-    document.getElementById('s_company_name').value = s.company_name || '';
-    document.getElementById('s_shortlist_subject').value = s.shortlist_subject || '';
-    document.getElementById('s_shortlist_body').value = s.shortlist_body || '';
-    document.getElementById('s_offer_subject').value = s.offer_subject || '';
-    document.getElementById('s_offer_body').value = s.offer_body || '';
+    const s = r.settings||{};
+    document.getElementById('s_company').value = s.company_name||'';
+    document.getElementById('s_email').value   = s.hr_email||'';
+    document.getElementById('s_pass').value    = s.hr_password||'';
+    document.getElementById('s_ss').value      = s.shortlist_subject||'';
+    document.getElementById('s_sb').value      = s.shortlist_body||'';
+    document.getElementById('s_os').value      = s.offer_subject||'';
+    document.getElementById('s_ob').value      = s.offer_body||'';
+    document.getElementById('s_url').value     = GAS_URL;
   } catch(e) {}
 }
+
 async function saveSettings() {
   try {
-    await api('saveSettings', {
-      hr_email: document.getElementById('s_hr_email').value,
-      hr_password: document.getElementById('s_hr_password').value,
-      company_name: document.getElementById('s_company_name').value,
-      shortlist_subject: document.getElementById('s_shortlist_subject').value,
-      shortlist_body: document.getElementById('s_shortlist_body').value,
-      offer_subject: document.getElementById('s_offer_subject').value,
-      offer_body: document.getElementById('s_offer_body').value,
+    await api('saveSettings',{
+      company_name:       document.getElementById('s_company').value,
+      hr_email:           document.getElementById('s_email').value,
+      hr_password:        document.getElementById('s_pass').value,
+      shortlist_subject:  document.getElementById('s_ss').value,
+      shortlist_body:     document.getElementById('s_sb').value,
+      offer_subject:      document.getElementById('s_os').value,
+      offer_body:         document.getElementById('s_ob').value,
     });
-    toast('Settings saved! ✓', 'success');
-  } catch(e) { toast('Error: ' + e.message, 'error'); }
-}
-function resetShortlistTemplate() {
-  document.getElementById('s_shortlist_subject').value = 'You are Shortlisted! — {{company}}';
-  document.getElementById('s_shortlist_body').value = 'Dear {{name}},\n\nWe are pleased to inform you that you have been SHORTLISTED for the position at {{company}}.\n\nInterview Details:\n📅 Date: {{interview_date}}\n⏰ Time: {{interview_time}}\n🏢 Type: {{interview_type}}\n\nPlease confirm your availability.\n\nBest regards,\nHR Team\n{{company}}';
-}
-function resetOfferTemplate() {
-  document.getElementById('s_offer_subject').value = 'Offer Letter — Welcome to {{company}}!';
-  document.getElementById('s_offer_body').value = 'Dear {{name}},\n\nCongratulations! We are delighted to offer you a position at {{company}}.\n\nPlease find your offer letter attached.\n\nYour joining date and further details are mentioned in the letter.\n\nWelcome aboard!\n\nBest regards,\nHR Team\n{{company}}';
-}
-function switchTab(id) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-  event.target.classList.add('active');
+    toast('Settings saved ✓','success');
+  } catch(e) { toast('Error: '+e.message,'error'); }
 }
 
-// ── Helpers ───────────────────────────────────────────────────
-function statusBadge(s) {
-  const map = { Pending: 'badge-pending', Shortlisted: 'badge-shortlisted', Selected: 'badge-selected', Rejected: 'badge-rejected' };
-  return `<span class="badge ${map[s]||'badge-pending'}">${s||'Pending'}</span>`;
+function resetTpl(t) {
+  if (t==='sl') {
+    document.getElementById('s_ss').value="You are Shortlisted! — {{company}}";
+    document.getElementById('s_sb').value="Dear {{name}},\n\nYou have been SHORTLISTED at {{company}}.\n\nInterview Details:\nDate: {{interview_date}}\nTime: {{interview_time}}\nType: {{interview_type}}\n\nPlease confirm your availability.\n\nBest regards,\nHR Team\n{{company}}";
+  } else {
+    document.getElementById('s_os').value="Offer Letter — Welcome to {{company}}!";
+    document.getElementById('s_ob').value="Dear {{name}},\n\nCongratulations! You have been selected at {{company}}.\n\nPlease find your offer letter attached. Your joining details are in the letter.\n\nWelcome aboard!\n\nBest regards,\nHR Team\n{{company}}";
+  }
 }
-function interviewBadge(t) {
-  if (!t) return '—';
-  const map = { 'On-site': 'badge-onsite', 'Virtual': 'badge-virtual', 'Telephonic': 'badge-telephonic' };
-  return `<span class="badge ${map[t]||'badge-pending'}">${t}</span>`;
+
+function saveGasUrl() {
+  const v = document.getElementById('gasInput').value.trim();
+  if (!v.startsWith('http')) { toast('Enter a valid URL','error'); return; }
+  GAS_URL = v;
+  localStorage.setItem('hh_gas', v);
+  document.getElementById('setupBanner').style.display='none';
+  document.getElementById('s_url').value = v;
+  toast('Connected! Loading data...','success');
+  loadCandidates(); loadSettings();
 }
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-let toastTimer;
-function toast(msg, type = 'success') {
-  const el = document.getElementById('toast');
-  document.getElementById('toastMsg').textContent = msg;
-  el.className = 'show ' + type;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.classList.remove('show'); }, 3000);
+
+function updateGasUrl() {
+  const v = document.getElementById('s_url').value.trim();
+  if (!v.startsWith('http')) { toast('Enter a valid URL','error'); return; }
+  GAS_URL = v;
+  localStorage.setItem('hh_gas', v);
+  toast('URL updated ✓','success');
+  loadCandidates(); loadSettings();
+}
+
+async function testConn() {
+  if (!GAS_URL) { toast('No URL set','error'); return; }
+  toast('Testing...','info');
+  try {
+    await api('ping');
+    toast('Connection successful ✓','success');
+  } catch(e) { toast('Connection failed: '+e.message,'error'); }
+}
+
+function swTab(el, id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════════════════════
+function sb(s){const m={Pending:'bp',Shortlisted:'bsl',Selected:'bsel',Rejected:'brej'};return`<span class="badge ${m[s]||'bp'}">${s||'Pending'}</span>`}
+function itb(t){if(!t)return'—';const m={'On-site':'bo',Virtual:'bv',Telephonic:'bt'};return`<span class="badge ${m[t]||'bp'}">${t}</span>`}
+function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+let _tt;
+function toast(msg,type='success'){
+  const el=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  el.className='show '+type;
+  clearTimeout(_tt);
+  _tt=setTimeout(()=>el.classList.remove('show'),3500);
 }
 </script>
 </body>
