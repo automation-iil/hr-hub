@@ -360,63 +360,80 @@ window.onload = () => {
 //  API — uses GET to avoid CORS preflight completely
 //  Large payloads (base64) use POST fallback
 // ══════════════════════════════════════════════════════════════
+// ── API ───────────────────────────────────────────────────────
+// Uses GET with query params — no custom headers = no CORS preflight.
+// For large base64 PDFs we strip them out and upload separately in chunks.
+
 async function api(action, data={}) {
-  if (!GAS_URL) { toast('Set your Apps Script URL first (Settings → Connection)', 'error'); throw new Error('No URL'); }
+  if (!GAS_URL) {
+    toast('Set your Apps Script URL in Settings → Connection','error');
+    throw new Error('No URL');
+  }
 
-  const payload = JSON.stringify(data);
-  // If payload is large (PDF upload), use POST; otherwise GET
-  const usePost = payload.length > 2000;
+  // Strip large base64 fields, upload them separately first
+  const fields = ['Resume Base64','Offer Letter Base64'];
+  const pending = {};
+  for (const f of fields) {
+    if (data[f] && data[f].length > 50000) {
+      pending[f] = data[f];
+      data = {...data};
+      delete data[f];
+    }
+  }
 
-  for (let attempt=1; attempt<=3; attempt++) {
+  // If we have large files, upload them first and get back temp keys
+  if (Object.keys(pending).length > 0) {
+    const candId = data.ID || ('NEW_' + Date.now());
+    for (const [field, b64] of Object.entries(pending)) {
+      toast('Uploading ' + field.replace(' Base64','') + '...', 'info');
+      await uploadChunked(candId, field, b64);
+    }
+    data = {...data, _pendingFiles: candId};
+  }
+
+  const url = GAS_URL + '?action=' + encodeURIComponent(action)
+    + '&data=' + encodeURIComponent(JSON.stringify(data));
+  return fetchGET(url);
+}
+
+// Split base64 into 500KB chunks, send one at a time
+async function uploadChunked(candId, field, b64) {
+  const CHUNK = 500000; // 500KB of base64 chars per chunk
+  const total = Math.ceil(b64.length / CHUNK);
+  for (let i = 0; i < total; i++) {
+    const chunk = b64.slice(i * CHUNK, (i + 1) * CHUNK);
+    const url = GAS_URL + '?action=uploadChunk'
+      + '&data=' + encodeURIComponent(JSON.stringify({
+          candId, field, chunk, index: i, total,
+          name: field.replace(' Base64', ' Name')
+        }));
+    await fetchGET(url);
+  }
+}
+
+async function fetchGET(url, retries=3) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const ctrl = new AbortController();
-      const tid  = setTimeout(() => ctrl.abort(), 30000);
-      let res;
-      if (usePost) {
-        res = await fetch(GAS_URL, {
-          method:'POST',
-          body: JSON.stringify({action, ...data}),
-          headers:{'Content-Type':'text/plain'},
-          signal: ctrl.signal
-        });
-      } else {
-        const url = GAS_URL + '?action=' + encodeURIComponent(action) +
-          (payload !== '{}' ? '&data=' + encodeURIComponent(payload) : '');
-        res = await fetch(url, { signal: ctrl.signal });
-      }
+      const tid  = setTimeout(() => ctrl.abort(), 35000);
+      const res  = await fetch(url, { signal: ctrl.signal });
       clearTimeout(tid);
       const text = await res.text();
       let json;
       try { json = JSON.parse(text); }
-      catch(e) { throw new Error('Bad response from server. Check your Apps Script deployment.'); }
+      catch(e) { throw new Error('Bad server response. Re-deploy your Apps Script.'); }
       if (!json.ok) throw new Error(json.error || 'Server error');
       return json;
     } catch(e) {
-      if (attempt === 3) {
-        if (e.name === 'AbortError') throw new Error('Request timed out after 30s. Google servers may be slow — try again.');
+      if (attempt === retries) {
+        if (e.name === 'AbortError') throw new Error('Timed out. Try again.');
         throw e;
       }
-      await sleep(1500 * attempt);
-      toast(`Retrying... (${attempt}/3)`, 'info');
+      toast('Retrying (' + attempt + '/3)...', 'info');
+      await new Promise(r => setTimeout(r, 2000 * attempt));
     }
   }
 }
-
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-// ══════════════════════════════════════════════════════════════
-//  LOAD DATA
-// ══════════════════════════════════════════════════════════════
-async function loadCandidates() {
-  try {
-    const r = await api('getCandidates');
-    candidates = r.candidates || [];
-    renderAll();
-  } catch(e) {
-    toast('Load error: ' + e.message, 'error');
-  }
-}
-
 function renderAll() {
   renderDash();
   renderCands(_ft, _fs);
