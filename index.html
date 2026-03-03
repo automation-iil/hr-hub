@@ -1007,7 +1007,13 @@
       <div class="page on" id="pg-dash">
         <div class="ph"
           style="animation: fadeUp3D 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; transform: translateY(30px) translateZ(-50px) rotateX(10deg); transform-style: preserve-3d; perspective: 1000px">
-          <h2 class="pt">Hello, <em>HR Team</em> 👋</h2>
+          <div style="display:flex; align-items:center; gap:12px">
+            <button class="mob-toggle" onclick="toggleMenu()"><svg width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg></button>
+            <h2 class="pt">Hello, <em>HR Team</em> 👋</h2>
+          </div>
           <button class="btn bp" onclick="go('can');openAdd()"><svg fill="none" stroke="currentColor" stroke-width="2"
               viewBox="0 0 24 24">
               <line x1="12" y1="5" x2="12" y2="19" />
@@ -1056,7 +1062,13 @@
       <!-- ALL CANDIDATES -->
       <div class="page" id="pg-can">
         <div class="ph">
-          <h2 class="pt">All <em>Candidates</em></h2>
+          <div style="display:flex; align-items:center; gap:12px">
+            <button class="mob-toggle" onclick="toggleMenu()"><svg width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg></button>
+            <h2 class="pt">All <em>Candidates</em></h2>
+          </div>
           <button class="btn bp" onclick="openAdd()"><svg fill="none" stroke="currentColor" stroke-width="2"
               viewBox="0 0 24 24">
               <line x1="12" y1="5" x2="12" y2="19" />
@@ -1096,7 +1108,13 @@
       <!-- SHORTLISTED -->
       <div class="page" id="pg-sl">
         <div class="ph">
-          <h2 class="pt"><em>Shortlisted</em></h2>
+          <div style="display:flex; align-items:center; gap:12px">
+            <button class="mob-toggle" onclick="toggleMenu()"><svg width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg></button>
+            <h2 class="pt"><em>Shortlisted</em></h2>
+          </div>
         </div>
         <div class="tw">
           <table>
@@ -1119,7 +1137,13 @@
       <!-- SELECTED -->
       <div class="page" id="pg-sel">
         <div class="ph">
-          <h2 class="pt"><em>Selected</em></h2>
+          <div style="display:flex; align-items:center; gap:12px">
+            <button class="mob-toggle" onclick="toggleMenu()"><svg width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg></button>
+            <h2 class="pt"><em>Selected</em></h2>
+          </div>
         </div>
         <div class="tw">
           <table>
@@ -1140,7 +1164,13 @@
       <!-- SETTINGS -->
       <div class="page" id="pg-cfg">
         <div class="ph">
-          <h2 class="pt"><em>Settings</em></h2>
+          <div style="display:flex; align-items:center; gap:12px">
+            <button class="mob-toggle" onclick="toggleMenu()"><svg width="20" height="20" fill="none"
+                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg></button>
+            <h2 class="pt"><em>Settings</em></h2>
+          </div>
         </div>
         <div class="tabs">
           <div class="tab on" onclick="swT(this,'tc-g')">General</div>
@@ -1339,10 +1369,14 @@
     }
 
     function go(p) {
-      document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
-      event.currentTarget.classList.add('on');
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+      document.querySelectorAll('.page').forEach(pg => pg.classList.remove('on'));
       document.getElementById('pg-' + p).classList.add('on');
+
+      const m = { dash: 0, can: 1, sl: 2, sel: 3, cfg: 4 };
+      document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+      if (m[p] !== undefined) {
+        document.querySelectorAll('.ni')[m[p]]?.classList.add('on');
+      }
 
       const sb = document.getElementById('sidebar');
       const ov = document.getElementById('mobOv');
@@ -1351,7 +1385,7 @@
         ov.classList.remove('open');
       }
 
-      if (p === 'dash') renderDash();
+      if (p === 'dash') render();
     }
 
     // ═══════════════════════════════════════════
