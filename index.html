@@ -54,7 +54,9 @@
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      flex-shrink: 0
+      flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      z-index: 90;
     }
 
     .logo {
@@ -144,7 +146,22 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 22px
+      margin-bottom: 22px;
+      gap: 12px;
+    }
+
+    .mob-toggle {
+      display: none;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--txt);
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .pt {
@@ -883,9 +900,33 @@
       width: 0%
     }
 
+    .mob-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+      z-index: 80;
+    }
+
     @media(max-width:700px) {
       .side {
-        display: none
+        position: fixed;
+        left: 0;
+        top: 0;
+        transform: translateX(-100%);
+      }
+
+      .side.open {
+        transform: translateX(0);
+      }
+
+      .mob-overlay.open {
+        display: block;
+      }
+
+      .mob-toggle {
+        display: flex;
       }
 
       .main {
@@ -908,8 +949,9 @@
 </head>
 
 <body>
+  <div class="mob-overlay" id="mobOv" onclick="toggleMenu()"></div>
   <div class="app">
-    <aside class="side">
+    <aside class="side" id="sidebar">
       <div class="logo">
         <img src="Logo%201.png" alt="Logo" />
         <h1>Indian <span>Inovatix</span></h1>
@@ -1282,6 +1324,36 @@
 
     function boot() { load(); loadCfg(); }
 
+    function toggleMenu() {
+      const sb = document.getElementById('sidebar');
+      const ov = document.getElementById('mobOv');
+      if (sb && ov) {
+        if (sb.classList.contains('open')) {
+          sb.classList.remove('open');
+          ov.classList.remove('open');
+        } else {
+          sb.classList.add('open');
+          ov.classList.add('open');
+        }
+      }
+    }
+
+    function go(p) {
+      document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+      event.currentTarget.classList.add('on');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+      document.getElementById('pg-' + p).classList.add('on');
+
+      const sb = document.getElementById('sidebar');
+      const ov = document.getElementById('mobOv');
+      if (sb && sb.classList.contains('open')) {
+        sb.classList.remove('open');
+        ov.classList.remove('open');
+      }
+
+      if (p === 'dash') renderDash();
+    }
+
     // ═══════════════════════════════════════════
     // CORE API — pure GET, always readable
     // ═══════════════════════════════════════════
@@ -1406,17 +1478,6 @@
 
     function filt(v) { ftx = v; render(); }
     function filtS(v) { fst = v; render(); }
-
-    // ═══════════════════════════════════════════
-    // NAV
-    // ═══════════════════════════════════════════
-    function go(id) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
-      document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
-      document.getElementById('pg-' + id).classList.add('on');
-      const m = { dash: 0, can: 1, sl: 2, sel: 3, cfg: 4 };
-      document.querySelectorAll('.ni')[m[id]]?.classList.add('on');
-    }
 
     // ═══════════════════════════════════════════
     // MODAL
