@@ -10,6 +10,7 @@
     rel="stylesheet" />
   <style>
     :root {
+      color-scheme: dark;
       --bg: #0f0f13;
       --sur: #18181f;
       --crd: #1e1e28;
@@ -30,15 +31,17 @@
     }
 
     body {
-      background: var(--bg);
+      background: radial-gradient(circle at 50% 0%, #1e1e28 0%, var(--bg) 60%);
       color: var(--txt);
       font-family: 'DM Sans', sans-serif;
-      min-height: 100vh
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .app {
       display: flex;
-      min-height: 100vh
+      min-height: 100vh;
+      position: relative;
     }
 
     .side {
@@ -56,12 +59,20 @@
 
     .logo {
       padding: 20px 18px 16px;
-      border-bottom: 1px solid var(--bdr)
+      border-bottom: 1px solid var(--bdr);
+      text-align: center;
+    }
+
+    .logo img {
+      max-height: 48px;
+      width: auto;
+      margin-bottom: 8px;
     }
 
     .logo h1 {
       font-family: 'DM Serif Display', serif;
-      font-size: 19px
+      font-size: 19px;
+      line-height: 1.1;
     }
 
     .logo span {
@@ -71,7 +82,7 @@
     .logo p {
       font-size: 10px;
       color: var(--mut);
-      margin-top: 2px;
+      margin-top: 4px;
       text-transform: uppercase;
       letter-spacing: .04em
     }
@@ -105,7 +116,8 @@
     .ni.on {
       color: var(--acc);
       background: rgba(124, 106, 247, .1);
-      border-left-color: var(--acc)
+      border-left-color: var(--acc);
+      box-shadow: inset 3px 0 0px var(--acc);
     }
 
     .ni svg {
@@ -153,10 +165,60 @@
     }
 
     .sc {
-      background: var(--crd);
-      border: 1px solid var(--bdr);
-      border-radius: 11px;
-      padding: 16px
+      background: linear-gradient(145deg, rgba(30, 30, 40, 0.8), rgba(24, 24, 31, 0.6));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow:
+        0 8px 32px 0 rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .sc::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+    }
+
+    .sc:hover {
+      transform: translateY(-8px) scale(1.03) rotateX(2deg) rotateY(-2deg);
+      box-shadow:
+        15px 25px 40px rgba(0, 0, 0, 0.5),
+        0 10px 10px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 0 20px rgba(124, 106, 247, 0.15);
+      border-color: rgba(124, 106, 247, 0.5);
+    }
+
+    .sc::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0) 100%);
+      transform: rotate(30deg) translateY(-100%);
+      transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+      pointer-events: none;
+    }
+
+    .sc:hover::after {
+      transform: rotate(30deg) translateY(100%);
     }
 
     .sn {
@@ -192,16 +254,41 @@
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 8px 14px;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 16px;
       border-radius: 8px;
       font-family: 'DM Sans', sans-serif;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       border: none;
-      transition: all .12s;
-      white-space: nowrap
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
 
     .bp {
@@ -256,10 +343,38 @@
     }
 
     .tw {
-      background: var(--crd);
-      border: 1px solid var(--bdr);
-      border-radius: 11px;
-      overflow: hidden
+      background: linear-gradient(135deg, rgba(30, 30, 40, 0.75) 0%, rgba(20, 20, 28, 0.85) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow:
+        0 20px 50px -10px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      animation: fadeUp3D 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      opacity: 0;
+      transform: translateY(30px) translateZ(-50px) rotateX(5deg);
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .page.on .tw {
+      opacity: 1;
+      transform: translateY(0) translateZ(0) rotateX(0);
+    }
+
+    @keyframes fadeUp3D {
+      from {
+        opacity: 0;
+        transform: translateY(30px) translateZ(-50px) rotateX(10deg);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) translateZ(0) rotateX(0);
+      }
     }
 
     .tb {
@@ -305,6 +420,7 @@
     }
 
     th {
+
       padding: 9px 13px;
       font-size: 10px;
       text-transform: uppercase;
@@ -315,19 +431,29 @@
       border-bottom: 1px solid var(--bdr)
     }
 
-    td {
-      padding: 11px 13px;
-      border-bottom: 1px solid var(--bdr);
-      font-size: 13px;
-      vertical-align: middle
+    tr {
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    tr:last-child td {
-      border-bottom: none
+    tr:hover {
+      background: linear-gradient(90deg, rgba(124, 106, 247, 0.03) 0%, rgba(124, 106, 247, 0.08) 50%, rgba(124, 106, 247, 0.03) 100%);
+      transform: scale(1.006) translateZ(10px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 10;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      font-size: 13.5px;
+      vertical-align: middle;
+      transition: color 0.3s;
     }
 
     tr:hover td {
-      background: rgba(124, 106, 247, .025)
+      color: #fff;
+      border-bottom-color: transparent;
     }
 
     .ac {
@@ -338,11 +464,13 @@
 
     .badge {
       display: inline-flex;
-      padding: 3px 8px;
+      padding: 4px 10px;
       border-radius: 20px;
       font-size: 11px;
-      font-weight: 600;
-      white-space: nowrap
+      font-weight: 700;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .b-p {
@@ -401,25 +529,26 @@
     }
 
     .mdl {
-      background: var(--crd);
-      border: 1px solid var(--bdr);
-      border-radius: 16px;
-      width: 600px;
+      background: linear-gradient(180deg, var(--sur) 0%, var(--crd) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      width: 650px;
       max-width: 96vw;
       max-height: 90vh;
       overflow-y: auto;
-      animation: pp .18s ease
+      animation: pp .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
     }
 
     @keyframes pp {
       from {
         opacity: 0;
-        transform: translateY(12px)
+        transform: translateY(20px) scale(0.97);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0)
+        transform: translateY(0) scale(1);
       }
     }
 
@@ -494,26 +623,30 @@
     input,
     select,
     textarea {
-      background: var(--bg);
-      border: 1px solid var(--bdr);
-      border-radius: 7px;
+      background: rgba(15, 15, 19, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9px;
       color: var(--txt);
       font-family: 'DM Sans', sans-serif;
       font-size: 13px;
-      padding: 8px 11px;
+      padding: 10px 14px;
       outline: none;
-      transition: border-color .12s;
-      width: 100%
+      transition: all 0.25s;
+      width: 100%;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     input:focus,
     select:focus,
     textarea:focus {
-      border-color: var(--acc)
+      border-color: var(--acc);
+      background: rgba(15, 15, 19, 0.9);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(124, 106, 247, 0.2);
     }
 
     select option {
-      background: var(--crd)
+      background: var(--crd);
+      color: var(--txt);
     }
 
     textarea {
@@ -598,13 +731,20 @@
       cursor: pointer;
       font-size: 13px;
       color: var(--mut);
-      font-weight: 500
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .tab:hover {
+      color: var(--txt);
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .tab.on {
-      background: var(--crd);
+      background: linear-gradient(180deg, #2a2a38 0%, #1e1e28 100%);
       color: var(--txt);
-      box-shadow: 0 1px 4px rgba(0, 0, 0, .3)
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--bdr);
     }
 
     .tp {
@@ -771,8 +911,9 @@
   <div class="app">
     <aside class="side">
       <div class="logo">
-        <h1>HR<span>Hub</span></h1>
-        <p>Hiring Automation</p>
+        <img src="Logo%201.png" alt="Logo" />
+        <h1>Indian <span>Inovatix</span></h1>
+        <p>Limited</p>
       </div>
       <div class="ns">Menu</div>
       <div class="ni on" onclick="go('dash')"><svg fill="none" stroke="currentColor" stroke-width="2"
@@ -822,7 +963,8 @@
 
       <!-- DASHBOARD -->
       <div class="page on" id="pg-dash">
-        <div class="ph">
+        <div class="ph"
+          style="animation: fadeUp3D 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; transform: translateY(30px) translateZ(-50px) rotateX(10deg); transform-style: preserve-3d; perspective: 1000px">
           <h2 class="pt">Hello, <em>HR Team</em> 👋</h2>
           <button class="btn bp" onclick="go('can');openAdd()"><svg fill="none" stroke="currentColor" stroke-width="2"
               viewBox="0 0 24 24">
@@ -831,24 +973,29 @@
             </svg>Add Candidate</button>
         </div>
         <div class="stats">
-          <div class="sc">
+          <div class="sc"
+            style="animation: fadeUp3D 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s forwards; opacity: 0; transform: translateY(30px) translateZ(-50px) rotateX(10deg)">
             <div class="sn" id="s0">—</div>
             <div class="sl">Total</div>
           </div>
-          <div class="sc">
+          <div class="sc"
+            style="animation: fadeUp3D 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards; opacity: 0; transform: translateY(30px) translateZ(-50px) rotateX(10deg)">
             <div class="sn" id="s1">—</div>
             <div class="sl">Shortlisted</div>
           </div>
-          <div class="sc">
+          <div class="sc"
+            style="animation: fadeUp3D 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s forwards; opacity: 0; transform: translateY(30px) translateZ(-50px) rotateX(10deg)">
             <div class="sn" id="s2">—</div>
             <div class="sl">Selected</div>
           </div>
-          <div class="sc">
+          <div class="sc"
+            style="animation: fadeUp3D 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards; opacity: 0; transform: translateY(30px) translateZ(-50px) rotateX(10deg)">
             <div class="sn" id="s3">—</div>
             <div class="sl">Pending</div>
           </div>
         </div>
-        <div class="tw">
+        <div class="tw"
+          style="animation: fadeUp3D 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards; opacity: 0; transform: translateY(30px) translateZ(-50px) rotateX(5deg)">
           <div class="tb"><b style="font-size:13px">Recent Candidates</b></div>
           <table>
             <thead>
@@ -891,9 +1038,8 @@
           <table>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
+                <th>Candidate Details</th>
+                <th>Contact</th>
                 <th>Status</th>
                 <th>CV</th>
                 <th>Mail</th>
@@ -968,6 +1114,10 @@
               <input id="sc_pw" type="password" placeholder="xxxx xxxx xxxx xxxx" />
               <p style="font-size:11px;color:var(--mut);margin-top:3px">myaccount.google.com → Security → 2-Step
                 Verification → App Passwords</p>
+            </div>
+            <div class="fg"><label>CC Email (Optional)</label><input id="sc_cc" type="email"
+                placeholder="manager@company.com" />
+              <p style="font-size:11px;color:var(--mut);margin-top:3px">Will be CC'd on Shortlist & Offer emails.</p>
             </div>
           </div>
           <div style="margin-top:12px"><button class="btn bp" onclick="saveCfg()">Save Settings</button></div>
@@ -1219,8 +1369,8 @@
       if (fst) list = list.filter(c => c.Status === fst);
       document.getElementById('canTb').innerHTML = list.length
         ? list.map(c => `<tr>
-        <td><b>${X(c.Name)}</b><br><small style="color:var(--mut)">${X(c.Address || '')}</small></td>
-        <td>${X(c.Email)}</td><td>${X(c.Phone || '')}</td>
+        <td><b>${X(c.Name)}</b><br><small style="color:var(--acc)">${formatDtTm(c['Interview Date'], c['Interview Time'])}</small><br><small style="color:var(--mut)">${X(c.Address || '')}</small></td>
+        <td>${X(c.Email)}<br><small style="color:var(--mut)">${X(c.Phone || '')}</small></td>
         <td>${SB(c.Status)}</td>
         <td>${c['Has Resume'] ? `<button class="btn bs sm" onclick="viewCV('${c.ID}')">👁 CV</button>` : '<span style="color:var(--mut)">—</span>'}</td>
         <td>${c['Shortlist Mail Sent'] && c['Shortlist Mail Sent'] !== 'No' ? '<span class="badge b-ok">✓</span>' : '<span class="badge b-no">—</span>'}</td>
@@ -1235,11 +1385,12 @@
       document.getElementById('slTb').innerHTML = sll.length
         ? sll.map(c => `<tr>
         <td><b>${X(c.Name)}</b></td><td>${X(c.Email)}</td>
-        <td>${X(c['Interview Date'] || '—')}</td><td>${X(c['Interview Time'] || '—')}</td>
+        <td>${formatDateSafe(c['Interview Date'])}</td><td>${formatTimeSafe(c['Interview Time'])}</td>
         <td>${ITB(c['Interview Type'])}</td>
-        <td>${c['Shortlist Mail Sent'] && c['Shortlist Mail Sent'] !== 'No' ? '<span class="badge b-ok">✓ Sent</span>' : '<span class="badge b-no">Pending</span>'}</td>
-        <td><button class="btn bgo sm" onclick="doSL('${c.ID}')">📧 Send</button></td></tr>`).join('')
-        : '<tr><td colspan="7"><div class="empty"><div class="ei">📋</div>No shortlisted candidates</div></td></tr>';
+        <td>${c['Shortlist Mail Sent'] !== 'No' ? '<span class="badge b-ok">✓ Sent</span>' : '<span class="badge b-no">Pending</span>'}</td>
+        <td>${c['Shortlist Mail Sent'] !== 'No' ? '<span style="color:var(--mut)">—</span>' : `<button class="btn bgo sm" onclick="doSL('${c.ID}')">📧 Send</button>`}</td>
+        </tr>`).join('')
+        : '<tr><td colspan="6"><div class="empty"><div class="ei">📋</div>No shortlisted candidates</div></td></tr>';
 
       // Selected
       const sell = DATA.filter(c => c.Status === 'Selected');
@@ -1247,9 +1398,10 @@
         ? sell.map(c => `<tr>
         <td><b>${X(c.Name)}</b></td><td>${X(c.Email)}</td>
         <td>${c['Has Offer'] ? '<span class="badge b-ok">✓ Uploaded</span>' : '<span class="badge b-no">⚠ Upload first</span>'}</td>
-        <td>${c['Offer Mail Sent'] && c['Offer Mail Sent'] !== 'No' ? '<span class="badge b-ok">✓ Sent</span>' : '<span class="badge b-no">—</span>'}</td>
-        <td><button class="btn bg sm" onclick="doOffer('${c.ID}')">🎉 Send</button></td></tr>`).join('')
-        : '<tr><td colspan="5"><div class="empty"><div class="ei">🏆</div>No selected candidates</div></td></tr>';
+        <td>${c['Offer Mail Sent'] !== 'No' ? '<span class="badge b-ok">✓ Sent</span>' : '<span class="badge b-no">Pending</span>'}</td>
+        <td>${c['Offer Mail Sent'] !== 'No' ? '<span style="color:var(--mut)">—</span>' : `<button class="btn bg sm" onclick="doOffer('${c.ID}')">🎉 Send</button>`}</td>
+        </tr>`).join('')
+        : '<tr><td colspan="4"><div class="empty"><div class="ei">🏆</div>No selected candidates</div></td></tr>';
     }
 
     function filt(v) { ftx = v; render(); }
@@ -1286,18 +1438,35 @@
       document.getElementById('fAd').value = c.Address || '';
       document.getElementById('fSt').value = c.Status || 'Pending';
       // Convert date to YYYY-MM-DD for the date input regardless of stored format
-      const rawDate = c['Interview Date'] || '';
+      let rawDate = String(c['Interview Date'] || '').trim();
       let isoDate = rawDate;
-      if (rawDate && !rawDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        // Try to parse DD/MM/YYYY or other formats
-        const parts = rawDate.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
-        if (parts) isoDate = parts[3] + '-' + parts[2].padStart(2, '0') + '-' + parts[1].padStart(2, '0');
+      if (rawDate) {
+        if (rawDate.includes('T')) isoDate = rawDate.split('T')[0];
+        else if (!rawDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+          const parts = rawDate.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+          if (parts) isoDate = parts[3] + '-' + parts[2].padStart(2, '0') + '-' + parts[1].padStart(2, '0');
+        }
       }
       document.getElementById('fDt').value = isoDate;
       document.getElementById('fTy').value = c['Interview Type'] || '';
       document.getElementById('fNo').value = c.Notes || '';
-      const tm = (c['Interview Time'] || '').match(/(\d+):(\d+)\s*(AM|PM)/i);
-      if (tm) { document.getElementById('fHr').value = String(parseInt(tm[1])); document.getElementById('fMn').value = tm[2]; document.getElementById('fAp').value = tm[3].toUpperCase(); }
+
+      // Fix if sheets returns a native Date string for time (e.g. 1899-12-30T10:30:00.000Z)
+      let rawTime = String(c['Interview Time'] || '').trim();
+      let tmMatch = rawTime.match(/(\d+):(\d+)\s*(AM|PM)/i);
+      if (!tmMatch && rawTime.includes('T')) {
+        const d = new Date(rawTime);
+        if (!isNaN(d.getTime())) {
+          let h = d.getHours();
+          let m = d.getMinutes().toString().padStart(2, '0');
+          let ap = h >= 12 ? 'PM' : 'AM';
+          h = h % 12;
+          if (h === 0) h = 12;
+          tmMatch = [null, h, m, ap];
+        }
+      }
+
+      if (tmMatch) { document.getElementById('fHr').value = String(parseInt(tmMatch[1])); document.getElementById('fMn').value = tmMatch[2]; document.getElementById('fAp').value = tmMatch[3].toUpperCase(); }
       if (c['Has Resume']) document.getElementById('cvN').textContent = '✓ Already uploaded';
       if (c['Has Offer']) document.getElementById('olN').textContent = '✓ Already uploaded';
       openMo('mo-c');
@@ -1414,7 +1583,7 @@
     }
 
     // ═══════════════════════════════════════════
-    // EMAILS
+    // EMAILS (MANUAL FALLBACK)
     // ═══════════════════════════════════════════
     async function doSL(id) {
       if (!confirm('Send shortlist interview email to this candidate?')) return;
@@ -1460,6 +1629,7 @@
         document.getElementById('sc_co').value = s.company_name || '';
         document.getElementById('sc_em').value = s.hr_email || '';
         document.getElementById('sc_pw').value = s.hr_password || '';
+        document.getElementById('sc_cc').value = s.cc_email || '';
         document.getElementById('sc_ss').value = s.shortlist_subject || '';
         document.getElementById('sc_sb').value = s.shortlist_body || '';
         document.getElementById('sc_os').value = s.offer_subject || '';
@@ -1474,6 +1644,7 @@
           company_name: document.getElementById('sc_co').value,
           hr_email: document.getElementById('sc_em').value,
           hr_password: document.getElementById('sc_pw').value,
+          cc_email: document.getElementById('sc_cc').value,
           shortlist_subject: document.getElementById('sc_ss').value,
           shortlist_body: document.getElementById('sc_sb').value,
           offer_subject: document.getElementById('sc_os').value,
@@ -1528,6 +1699,26 @@
     // ═══════════════════════════════════════════
     // HELPERS
     // ═══════════════════════════════════════════
+    function formatDateSafe(d) {
+      if (!d) return '—';
+      let ds = String(d).trim();
+      if (ds.includes('T')) return new Date(ds).toLocaleDateString();
+      return X(ds);
+    }
+    function formatTimeSafe(t) {
+      if (!t) return '—';
+      let ts = String(t).trim();
+      if (ts.includes('T')) {
+        const d = new Date(ts);
+        if (!isNaN(d.getTime())) return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+      return X(ts);
+    }
+    function formatDtTm(d, t) {
+      const dd = formatDateSafe(d), tt = formatTimeSafe(t);
+      if (dd === '—' && tt === '—') return '';
+      return `${dd !== '—' ? dd : ''} ${tt !== '—' ? tt : ''}`.trim();
+    }
     function SB(s) { const m = { Pending: 'b-p', Shortlisted: 'b-sl', Selected: 'b-se', Rejected: 'b-re' }; return `<span class="badge ${m[s] || 'b-p'}">${s || 'Pending'}</span>` }
     function ITB(t) { if (!t) return '—'; const m = { 'On-site': 'b-on', Virtual: 'b-vi', Telephonic: 'b-ok' }; return `<span class="badge ${m[t] || 'b-p'}">${t}</span>` }
     function X(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') }
